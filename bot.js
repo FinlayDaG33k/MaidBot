@@ -20,7 +20,7 @@ engine.on('msg', function(data) {
 			success: function (data1){
 				console.log(data1);
 				array = data1[0];
-				if(data1[0].length == 0) {
+				if(!data1[0].length == 0) {
 					console.log("Username: "+ array.uname +" | Suspicion Level: " + array.suspicion + " | Read the full profile at: " + array.link);
 					engine.chat("Username: "+ array.uname +" | Suspicion Level: " + array.suspicion + " | Read the full profile at: " + array.link);
 				}else{
