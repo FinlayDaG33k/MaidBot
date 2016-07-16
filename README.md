@@ -1,4 +1,4 @@
-# TrustyBot
+# MaidBot
 Chat bot build for Cointrust.pw
 
 # Donate
