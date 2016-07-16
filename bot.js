@@ -42,7 +42,7 @@ engine.on('msg', function(data) {
 								engine.chat("I found "+ array.uname +" on Cointrust, he or she seems to spam a lot. You can read his or her full profile at: " + array.link);
 							}
 						}else{	
-							engine.chat("I could not find the user you requested, you can try to register it on cointrust.pw");
+							engine.chat("I'm sorry, but I could not find the user you requested, you can try to register it on cointrust.pw");
 						}
 					}
 				});
