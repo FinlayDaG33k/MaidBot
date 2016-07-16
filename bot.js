@@ -10,11 +10,11 @@ engine.on('msg', function(data) {
 	message = data.message;
 	if(message.indexOf("!maidbot") == 0) {
 		tokens = message.split(" ");
-		if(tokens[1] == "help"){
+		if(tokens[1].toLowerCase() == "help"){
 			engine.chat("You can view my wiki here: https://github.com/FinlayDaG33k/TrustyBot/wiki/Commands/");
-		}else if(tokens[1] == "donate"){
+		}else if(tokens[1].toLowerCase() == "donate"){
 			engine.chat("You can send donations in BTC to: 1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS");
-		}else if(tokens[1] == "lookup"){
+		}else if(tokens[1].toLowerCase() == "lookup"){
 			if(typeof tokens[2] == "undefined"){
 				engine.chat("Usage: !maidbot lookup <username>");
 			}else{
@@ -57,8 +57,10 @@ engine.on('msg', function(data) {
 		}
 	}else if(message.indexOf("!rep") == 0) {
 		tokens = message.split(" ");
-		if(tokens[1].toLowerCase == "maidbot" && tokens[2] == "+"){
+		if(tokens[1].toLowerCase() == "maidbot" && tokens[2] == "+"){
 			engine.chat("I am glad that you like my service Master.");
+		}else if(tokens[1].toLowerCase() == "maidbot" && tokens[2] == "-"){
+			engine.chat("I am sad to hear that you don't like my service Master");
 		}
 	}
 });
