@@ -1,5 +1,5 @@
 # MaidBot
-Chat bot build for Cointrust.pw
+Just a chatbot that should act like a little Maid on BustaBit
 
 # Donate
 Keep me working on the bot by donating some cryptos:  
