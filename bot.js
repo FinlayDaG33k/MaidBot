@@ -11,7 +11,7 @@ engine.on('msg', function(data) {
 	if(message.indexOf("!maidbot") == 0) {
 		tokens = message.split(" ");
 		if(tokens[1] == "help"){
-			engine.chat("YOu can view my wiki here: https://github.com/FinlayDaG33k/TrustyBot/wiki/Commands/");
+			engine.chat("You can view my wiki here: https://github.com/FinlayDaG33k/TrustyBot/wiki/Commands/");
 		}else if(tokens[1] == "donate"){
 			engine.chat("You can send donations in BTC to: 1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS");
 		}else if(tokens[1] == "lookup"){
