@@ -19,12 +19,13 @@ engine.on('msg', function(data) {
 			data1: data,
 			success: function (data1){
 				console.log(data1);
-				if(typeof data1[0].uname == 'undefined') {
+				array = data1[0];
+				if(data1[0].length == 0) {
+					console.log("Username: "+ array.uname +" | Suspicion Level: " + array.suspicion + " | Read the full profile at: " + array.link);
+					engine.chat("Username: "+ array.uname +" | Suspicion Level: " + array.suspicion + " | Read the full profile at: " + array.link);
+				}else{
 					console.log("User not found!");
 					engine.chat("User not found!");
-				}else{
-					console.log("Username: "+ data1[0].uname +" | Suspicion Level: " + data1[0].suspicion + " | Read the full profile at: " + data1[0].link);
-					engine.chat("Username: "+ data1[0].uname +" | Suspicion Level: " + data1[0].suspicion + " | Read the full profile at: " + data1[0].link);
 				}
 			}
 		});
@@ -33,4 +34,8 @@ engine.on('msg', function(data) {
 	}
 });
 
+
+//engine.cashOut(); //Do this when playing
+//engine.stop(); //Stops the strategy
+//engine.chat('Hello Spam');
 	
