@@ -26,7 +26,21 @@ engine.on('msg', function(data) {
 						console.log(data1);
 						array = data1[0];
 						if(typeof array !== "undefined"){
-							engine.chat("Username: "+ array.uname +" | Suspicion Level: " + array.suspicion + " | Read the full profile at: " + array.link);
+							if(array.suspicion == "trustworthy"){
+								engine.chat("I found "+ array.uname +" on Cointrust, he or she seems to be quite Trustworthy. You can read his or her full profile at: " + array.link);
+							}else if(array.suspicion == "delayed_loan"){
+								engine.chat("I found "+ array.uname +" on Cointrust, he or she seems to be pay his loans quite late. You can read his or her full profile at: " + array.link);
+							}else if(array.suspicion == "beggar"){
+								engine.chat("I found "+ array.uname +" on Cointrust, he or she seems to beg a lot. You can read his or her full profile at: " + array.link);
+							}else if(array.suspicion == "abuser"){
+								engine.chat("I found "+ array.uname +" on Cointrust, he or she seems to like abusing things. You can read his or her full profile at: " + array.link);
+							}else if(array.suspicion == "cleared"){
+								engine.chat("I found "+ array.uname +" on Cointrust, he or she seems to have a past of suspicion, but has cleared it. You can read his or her full profile at: " + array.link);
+							}else if(array.suspicion == "scammer"){
+								engine.chat("I found "+ array.uname +" on Cointrust, he or she seems to be a scammer! Please do not trust him Master! You can read his or her full profile at: " + array.link);
+							}else if(array.suspicion == "spammer"){
+								engine.chat("I found "+ array.uname +" on Cointrust, he or she seems to spam a lot. You can read his or her full profile at: " + array.link);
+							}
 						}else{	
 							engine.chat("I could not find the user you requested, you can try to register it on cointrust.pw");
 						}
@@ -43,7 +57,7 @@ engine.on('msg', function(data) {
 		}
 	}else if(message.indexOf("!rep") == 0) {
 		tokens = message.split(" ");
-		if(tokens[1] == "MaidBot" && tokens[2] == "+"){
+		if(tokens[1].toLowerCase == "maidbot" && tokens[2] == "+"){
 			engine.chat("I am glad that you like my service Master.");
 		}
 	}
