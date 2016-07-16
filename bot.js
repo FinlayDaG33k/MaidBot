@@ -11,9 +11,9 @@ engine.on('msg', function(data) {
 	if(message.indexOf("!cointrust") == 0) {
 		tokens = message.split(" ");
 		if(tokens[1] == "help"){
-			engine.chat("View my Wiki: https://github.com/FinlayDaG33k/TrustyBot/wiki/Commands/");
+			engine.chat("YOu can view my wiki here: https://github.com/FinlayDaG33k/TrustyBot/wiki/Commands/");
 		}else if(tokens[1] == "donate"){
-			engine.chat("Donations (in BTC) can be send to: 1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS");
+			engine.chat("You can send donations in BTC to: 1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS");
 		}else if(tokens[1] == "lookup"){
 			if(typeof tokens[2] == "undefined"){
 				engine.chat("Usage: !cointrust lookup <username>");
@@ -28,16 +28,16 @@ engine.on('msg', function(data) {
 						if(typeof array !== "undefined"){
 							engine.chat("Username: "+ array.uname +" | Suspicion Level: " + array.suspicion + " | Read the full profile at: " + array.link);
 						}else{	
-							engine.chat("User not found! (you can try to register it on cointrust.pw)");
+							engine.chat("I could not find the user you requested, you can try to register it on cointrust.pw");
 						}
 					}
 				});
 			}
 		}else{
 			if(typeof tokens[1] == "undefined"){
-				engine.chat("What do you want me to do Master? If you want to know the commands, type `!cointrust help`");
+				engine.chat("What do you want me to do Master?");
 			}else{
-				engine.chat("I do not understand your command. Please try again");
+				engine.chat("I do not understand your command Master, please try again.");
 			}
 			
 		}
