@@ -35,7 +35,7 @@ engine.on('msg', function(data) {
 			}
 		}else{
 			if(typeof tokens[1] == "undefined"){
-				engine.chat("What do you want me to do Master?");
+				engine.chat("What do you want me to do Master? If you want to know the commands, type `!cointrust help`");
 			}else{
 				engine.chat("I do not understand your command. Please try again");
 			}
