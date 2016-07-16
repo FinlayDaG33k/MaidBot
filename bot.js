@@ -41,5 +41,10 @@ engine.on('msg', function(data) {
 			}
 			
 		}
+	}else if(message.indexOf("!rep") == 0) {
+		tokens = message.split(" ");
+		if(tokens[1] == "MaidBot" && tokens[2] == "+"){
+			engine.chat("I am glad that you like my service Master.");
+		}
 	}
 });
