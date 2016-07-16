@@ -8,7 +8,7 @@ if(typeof jQuery === "undefined"){
 
 engine.on('msg', function(data) {
 	message = data.message;
-	if(message.indexOf("!cointrust") == 0) {
+	if(message.indexOf("!maidbot") == 0) {
 		tokens = message.split(" ");
 		if(tokens[1] == "help"){
 			engine.chat("YOu can view my wiki here: https://github.com/FinlayDaG33k/TrustyBot/wiki/Commands/");
@@ -16,7 +16,7 @@ engine.on('msg', function(data) {
 			engine.chat("You can send donations in BTC to: 1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS");
 		}else if(tokens[1] == "lookup"){
 			if(typeof tokens[2] == "undefined"){
-				engine.chat("Usage: !cointrust lookup <username>");
+				engine.chat("Usage: !maidbot lookup <username>");
 			}else{
 				$.ajax({
 					dataType: "json",
