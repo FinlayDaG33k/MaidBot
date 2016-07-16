@@ -7,7 +7,6 @@ if(typeof jQuery === "undefined"){
 }
 
 engine.on('msg', function(data) {
-    console.log('Chat message!...');
 	message = data.message;
 	if (message.indexOf("!cointrust") >= 0) {
 		tokens = message.split(" ", 2);
@@ -20,22 +19,13 @@ engine.on('msg', function(data) {
 			success: function (data1){
 				console.log(data1);
 				array = data1[0];
-				if(!data1[0].length == 0) {
-					console.log("Username: "+ array.uname +" | Suspicion Level: " + array.suspicion + " | Read the full profile at: " + array.link);
+				if(typeof array !== "undefined"){
 					engine.chat("Username: "+ array.uname +" | Suspicion Level: " + array.suspicion + " | Read the full profile at: " + array.link);
 				}else{
-					console.log("User not found!");
+					
 					engine.chat("User not found!");
 				}
 			}
 		});
-	}else{
-		console.log('Not a TrustyBot command, ignoring...');
 	}
 });
-
-
-//engine.cashOut(); //Do this when playing
-//engine.stop(); //Stops the strategy
-//engine.chat('Hello Spam');
-	
