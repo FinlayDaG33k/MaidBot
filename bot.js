@@ -1,4 +1,4 @@
-console.log("MaidBot v2016.07.17.14 Initialized");
+console.log("MaidBot v2016.07.17.15 Initialized");
 
 
 // Check if jQuery is in the page, and if not, inject it in the page
@@ -7,6 +7,28 @@ if(typeof jQuery === "undefined"){
 	var script = document.createElement('script'); 
 	script.src = 'https://code.jquery.com/jquery-3.0.0.min.js'; // the URL to the jQuery library
 	document.documentElement.firstChild.appendChild(script) // now append the script into HEAD, it will fetch and be executed
+}
+
+function display_lookup_user(suspicion,username,profilelink){
+	if(suspicion == "trustworthy"){
+		engine.chat("I was able to find "+ username +" on Cointrust, and he or she seems to be quite Trustworthy. You can read his or her full profile at: " + profilelink);
+	}else if(suspicion == "delayed_loan"){
+		engine.chat("I was able to find "+ username +" on Cointrust, but he or she seems to be pay his loans quite late. You can read his or her full profile at: " + profilelink);
+	}else if(suspicion == "beggar"){
+		engine.chat("I was able to find "+ username +" on Cointrust, but he or she seems to beg a lot. You can read his or her full profile at: " + profilelink);
+	}else if(suspicion == "abuser"){
+		engine.chat("I was able to find "+ username +" on Cointrust, but he or she seems to like abusing things. You can read his or her full profile at: " + profilelink);
+	}else if(suspicion == "cleared"){
+		engine.chat("I was able to find "+ username +" on Cointrust, but he or she seems to have a past of suspicion, but has cleared it. You can read his or her full profile at: " + profilelink);
+	}else if(suspicion == "scammer"){
+		engine.chat("I was able to find "+ username +" on Cointrust, but he or she seems to be a scammer! Please do not trust him Master! You can read his or her full profile at: " + profilelink);
+	}else if(suspicion == "spammer"){
+		engine.chat("I was able to find "+ username +" on Cointrust, but he or she seems to spam a lot. You can read his or her full profile at: " + profilelink);
+	}else if(suspicion == "dwc"){
+		engine.chat("I was able to find "+ username +" on Cointrust, but you should be careful with him or her. You can read his or her full profile at: " + profilelink);
+	}else if(suspicion == "none"){
+		engine.chat("I was able to find "+ username +" on Cointrust, but he or she seems to be neutral. You can read his or her full profile at: " + profilelink);
+	}
 }
 
 
@@ -30,23 +52,7 @@ engine.on('msg', function(data) {
 						success: function (data1){
 							array = data1[0];
 							if(typeof array !== "undefined"){
-								if(array.suspicion == "trustworthy"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, and he or she seems to be quite Trustworthy. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "delayed_loan"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to be pay his loans quite late. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "beggar"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to beg a lot. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "abuser"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to like abusing things. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "cleared"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to have a past of suspicion, but has cleared it. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "scammer"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to be a scammer! Please do not trust him Master! You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "spammer"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to spam a lot. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "none"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to be neutral. You can read his or her full profile at: " + array.link);
-								}
+								display_lookup_user(array.suspicion,array.uname,array.link);
 							}else{	
 								engine.chat("I'm sorry, but I could not find the user you requested, but you can try to lookup the user here: https://www.cointrust.pw/?s=" + tokens[2]);
 							}
@@ -59,27 +65,7 @@ engine.on('msg', function(data) {
 						data1: data,
 						success: function (data1){
 							array = data1[0];
-							if(typeof array !== "undefined"){
-								if(array.suspicion == "trustworthy"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, and he or she seems to be quite Trustworthy. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "delayed_loan"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to be pay his loans quite late. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "beggar"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to beg a lot. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "abuser"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to like abusing things. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "cleared"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to have a past of suspicion, but has cleared it. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "scammer"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to be a scammer! Please do not trust him Master! You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "spammer"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to spam a lot. You can read his or her full profile at: " + array.link);
-								}else if(array.suspicion == "none"){
-									engine.chat("I was able to find "+ array.uname +" on Cointrust, but he or she seems to be neutral. You can read his or her full profile at: " + array.link);
-								}
-							}else{	
-								engine.chat("I'm sorry, but I could not find the user you requested, but you can try to lookup the user here: https://www.cointrust.pw/?s=" + tokens[2]);
-							}
+							display_lookup_user(array.suspicion,array.uname,array.link);
 						}
 					});
 				}
