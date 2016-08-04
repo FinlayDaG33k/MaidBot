@@ -1,5 +1,6 @@
-console.log("MaidBot v2016.07.18.11 Initialized");
-
+console.log("MaidBot v2016.08.04.13 Initialized");
+var log_secret = "";
+var call_toggle = false;
 
 // Check if jQuery is in the page, and if not, inject it in the page
 if(typeof jQuery === "undefined"){
@@ -40,7 +41,13 @@ engine.on('msg', function(data) {
 		if(data.channelName == "spam"){
 			tokens = message.split(" ");
 			if(typeof tokens[1] == "undefined"){
-				engine.chat("What do you want me to do Master?");
+				if(call_toggle == false){
+					engine.chat("What do you want me to do Master?");
+					call_toggle = true;
+				}else{
+					engine.chat("Did you call for me Master?");
+					call_toggle = false;
+				}
 			}else{
 				if(tokens[1].toLowerCase() == "help"){
 					engine.chat("You can view my wiki here: https://github.com/FinlayDaG33k/MaidBot/wiki/Commands/");
@@ -57,8 +64,11 @@ engine.on('msg', function(data) {
 								if(typeof array !== "undefined"){
 									display_lookup_user(array.suspicion,array.uname,array.link);
 								}else{	
-									engine.chat("I'm sorry, but I could not find you on Cointrust, but you can try to lookup yourself here: https://www.cointrust.pw/?s=" + tokens[2]);
+									engine.chat("I'm sorry, but I could not find you on Cointrust, but you can try to lookup yourself here: https://www.cointrust.pw/?s=" + data.username);
 								}
+							},
+							error: function(data1){
+								engine.chat("I'm sorry Master, but I am not able to reach Cointrust by myself. You can try to lookup yourself manually: https://www.cointrust.pw/?s=" + data.username);
 							}
 						});
 					}else{
@@ -73,6 +83,9 @@ engine.on('msg', function(data) {
 								}else{	
 									engine.chat("I'm sorry, but I could not find the user you requested, but you can try to lookup the user here: https://www.cointrust.pw/?s=" + tokens[2]);
 								}
+							},
+							error: function(data1){
+								engine.chat("I'm sorry Master, but I am not able to reach Cointrust by myself. You can try to lookup the user manually: https://www.cointrust.pw/?s=" + tokens[2]);
 							}
 						});
 					}
@@ -101,6 +114,7 @@ engine.on('msg', function(data) {
 				}else{
 					engine.chat("I do not understand your command Master, please try again.");
 				}
+				
 			}
 		}else if(message.indexOf("!rep") == 0) {
 			tokens = message.split(" ");
