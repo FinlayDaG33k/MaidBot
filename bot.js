@@ -1,5 +1,5 @@
-console.log("MaidBot v2016.08.04.13 Initialized");
-var log_secret = "";
+console.log("MaidBot v2016.08.27.18 Initialized");
+var clienttoken = "";
 var call_toggle = false;
 
 // Check if jQuery is in the page, and if not, inject it in the page
@@ -38,9 +38,9 @@ function display_lookup_user(suspicion,username,profilelink){
 engine.on('msg', function(data) {
 	message = data.message;
 	if(message.indexOf("!maidbot") == 0) {
-		if(data.channelName == "spam"){
+		if(data.channelName == "spam"){ // If the channel is SPAM (MaidBot is only available in the SPAM channel)
 			tokens = message.split(" ");
-			if(typeof tokens[1] == "undefined"){
+			if(typeof tokens[1] == "undefined"){ // If there is no command entered
 				if(call_toggle == false){
 					engine.chat("What do you want me to do Master?");
 					call_toggle = true;
@@ -49,47 +49,48 @@ engine.on('msg', function(data) {
 					call_toggle = false;
 				}
 			}else{
-				if(tokens[1].toLowerCase() == "help"){
+				if(tokens[1].toLowerCase() == "help"){ // If the command is "help"
 					engine.chat("You can view my wiki here: https://github.com/FinlayDaG33k/MaidBot/wiki/Commands/");
-				}else if(tokens[1].toLowerCase() == "donate"){
-					engine.chat("You can send donations in BTC to: 1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS");
-				}else if(tokens[1].toLowerCase() == "lookup"){
-					if(typeof tokens[2] == "undefined"){
+				}else if(tokens[1].toLowerCase() == "donate"){ // If the command is "donate"
+					engine.chat("If you want to donate, you can send Bits to me Master.");
+				}else if(tokens[1].toLowerCase() == "lookup"){ // If the command is "lookup"
+					if(typeof tokens[2] == "undefined"){ // If the user to lookup is not specified, look up the issuer
 						$.ajax({
 						dataType: "json",
-							url: "https://cointrust.pw/wp-json/wp/v2/profile?slug=" + data.username,
+							url: "https://cointrust.xyz/wp-json/wp/v2/profile?slug=" + data.username,
 							data1: data,
 							success: function (data1){
 								array = data1[0];
 								if(typeof array !== "undefined"){
 									display_lookup_user(array.suspicion,array.uname,array.link);
 								}else{	
-									engine.chat("I'm sorry, but I could not find you on Cointrust, but you can try to lookup yourself here: https://www.cointrust.pw/?s=" + data.username);
+									engine.chat("I'm sorry, but I could not find you on Cointrust, but you can try to lookup yourself here: https://www.cointrust.xyz/?s=" + data.username);
 								}
 							},
 							error: function(data1){
-								engine.chat("I'm sorry Master, but I am not able to reach Cointrust by myself. You can try to lookup yourself manually: https://www.cointrust.pw/?s=" + data.username);
+								engine.chat("I'm sorry Master, but I am not able to reach Cointrust by myself. You can try to lookup yourself manually: https://www.cointrust.xyz/?s=" + data.username);
 							}
 						});
-					}else{
+					}else{ // If the user to lookup is specified, then look him or her up
 						$.ajax({
 							dataType: "json",
-							url: "https://cointrust.pw/wp-json/wp/v2/profile?slug=" + tokens[2],
+							url: "https://cointrust.xyz/wp-json/wp/v2/profile?slug=" + tokens[2],
 							data1: data,
 							success: function (data1){
 								array = data1[0];
 								if(typeof array !== "undefined"){
 									display_lookup_user(array.suspicion,array.uname,array.link);
 								}else{	
-									engine.chat("I'm sorry, but I could not find the user you requested, but you can try to lookup the user here: https://www.cointrust.pw/?s=" + tokens[2]);
+									engine.chat("I'm sorry, but I could not find the user you requested, but you can try to lookup the user here: https://www.cointrust.xyz/?s=" + tokens[2]);
 								}
 							},
 							error: function(data1){
-								engine.chat("I'm sorry Master, but I am not able to reach Cointrust by myself. You can try to lookup the user manually: https://www.cointrust.pw/?s=" + tokens[2]);
+								engine.chat("I'm sorry Master, but I am not able to reach Cointrust by myself. You can try to lookup the user manually: https://www.cointrust.xyz/?s=" + tokens[2]);
 							}
 						});
 					}
-				}else if(tokens[1].toLowerCase() == "worth"){
+				}else if(tokens[1].toLowerCase() == "worth"){ // If the command is "worth"
+					// Sidenote: this function does not work, feel free to fix it!
 					if(typeof tokens[2] !== "undefined"){
 						if(typeof tokens[3] !== "undefined"){
 							if(tokens[3].toLowerCase() == "eur"){
@@ -111,17 +112,56 @@ engine.on('msg', function(data) {
 					}else{
 						engine.chat("I'm sorry, but I can not help you with this yet. Maybe you would like to run one of my other commands?");
 					}
-				}else{
+				}else if(tokens[1].toLowerCase() == "rep"){ // If the command is "rep" (Function is a work in progress!)
+					if(typeof tokens[2] !== "undefined"){
+						if(typeof tokens[3] !== "undefined"){
+							if(tokens[2].toLowerCase() == "maidbot" && tokens[3] == "+"){
+								engine.chat("I am glad to hear that you like my service Master.");
+							}else if(tokens[2].toLowerCase() == "maidbot" && tokens[3] == "-"){
+								engine.chat("I am sad to hear that you don't like my service Master");
+							}
+							if(typeof tokens[4] !== "undefined"){
+								$.ajax({
+									url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=rep&username=" + tokens[2] + "&rep=" + encodeURIComponent(tokens[3]) + "&message=" + tokens[4] + "&issuer=" + data.username,
+									array: data,
+									crossDomain: true,
+									success: function (array){
+										engine.chat(array);
+									}
+								});	
+							}else{
+								$.ajax({
+									url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=rep&username=" + tokens[2] + "&rep=" + encodeURIComponent(tokens[3]) + "&message=&issuer=" + data.username,
+									array: data,
+									crossDomain: true,
+									success: function (array){
+										engine.chat(array);
+									}
+								});	
+							}
+						}else{
+							$.ajax({
+								url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=rep&username=" + tokens[2] + "",
+								array: data,
+								crossDomain: true,
+								success: function (array){
+									engine.chat(array);
+								}
+							});								
+						}
+					}else{
+						$.ajax({
+							url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=rep&username=" + data.username,
+							array: data,
+							crossDomain: true,
+							success: function (array){
+								engine.chat(array);
+							}
+						});	
+					}
+				}else{ // If the command is not found
 					engine.chat("I do not understand your command Master, please try again.");
 				}
-				
-			}
-		}else if(message.indexOf("!rep") == 0) {
-			tokens = message.split(" ");
-			if(tokens[1].toLowerCase() == "maidbot" && tokens[2] == "+"){
-				engine.chat("I am glad to hear that you like my service Master.");
-			}else if(tokens[1].toLowerCase() == "maidbot" && tokens[2] == "-"){
-				engine.chat("I am sad to hear that you don't like my service Master");
 			}
 		}
 	}
