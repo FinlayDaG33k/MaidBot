@@ -1,4 +1,4 @@
-console.log("MaidBot v2016.08.27.18 Initialized");
+console.log("MaidBot v2016.08.27.22 Initialized");
 var clienttoken = "";
 var call_toggle = false;
 
@@ -34,12 +34,18 @@ function display_lookup_user(suspicion,username,profilelink){
 	}
 }
 
+function tokenize(msg, lenght) {
+    return (/^(\S+) (\S+) (\S+) (\S+) (.*)$/.exec(msg) || []).slice(1, 6);
+}
 
 engine.on('msg', function(data) {
 	message = data.message;
 	if(message.indexOf("!maidbot") == 0) {
 		if(data.channelName == "spam"){ // If the channel is SPAM (MaidBot is only available in the SPAM channel)
 			tokens = message.split(" ");
+			if(tokens.length > 5){
+				tokens = tokenize(message);
+			}			
 			if(typeof tokens[1] == "undefined"){ // If there is no command entered
 				if(call_toggle == false){
 					engine.chat("What do you want me to do Master?");
@@ -50,9 +56,9 @@ engine.on('msg', function(data) {
 				}
 			}else{
 				if(tokens[1].toLowerCase() == "help"){ // If the command is "help"
-					engine.chat("You can view my wiki here: https://github.com/FinlayDaG33k/MaidBot/wiki/Commands/");
+					engine.chat("You can view my wiki here: https://github.com/FinlayDaG33k/MaidBot/wiki/Commands/. Or if you run into any problems, you can report them here: https://github.com/FinlayDaG33k/MaidBot/issues");
 				}else if(tokens[1].toLowerCase() == "donate"){ // If the command is "donate"
-					engine.chat("If you want to donate, you can send Bits to me Master.");
+					engine.chat("If you want to donate, you can send BTC to me: 💕1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS💕 (without the little hearts, teehee)");
 				}else if(tokens[1].toLowerCase() == "lookup"){ // If the command is "lookup"
 					if(typeof tokens[2] == "undefined"){ // If the user to lookup is not specified, look up the issuer
 						$.ajax({
