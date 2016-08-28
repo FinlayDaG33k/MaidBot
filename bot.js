@@ -1,4 +1,4 @@
-console.log("MaidBot v2016.08.27.22 Initialized");
+console.log("MaidBot v2016.08.28.13 Initialized");
 var clienttoken = "";
 var call_toggle = false;
 
@@ -38,6 +38,7 @@ function tokenize(msg, lenght) {
     return (/^(\S+) (\S+) (\S+) (\S+) (.*)$/.exec(msg) || []).slice(1, 6);
 }
 
+// If somebody sends a message in the chat
 engine.on('msg', function(data) {
 	message = data.message;
 	if(message.indexOf("!maidbot") == 0) {
@@ -170,5 +171,30 @@ engine.on('msg', function(data) {
 				}
 			}
 		}
+	}else if(message.indexOf("!rep") == 0){
+		engine.chat("I'm sorry, but MartinBot seems to be offline, so I took over this part. Please refer to my wiki to learn how to use me: https://github.com/FinlayDaG33k/MaidBot/wiki/Rep");
 	}
+});
+
+// If the game starts, take all bets and dump em in a DB to calculate the wagered amount
+engine.on('game_started', function(data) {
+	$.each(data, function (i, ob) {
+		var wagered = [];
+		$.each(ob, function (ind, obj) {
+			if(ind == "username"){
+				wagered.push(obj);
+			}else if(ind == "bet"){
+			    wagered.push(obj / 100);
+			}
+		});
+		
+		$.ajax({
+			url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=wagered&username=" + wagered[1] + "&bet=" + wagered[0],
+			array: data,
+			crossDomain: true,
+			success: function (array){
+				console.log(array);
+			}
+		});
+	});
 });
