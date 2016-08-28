@@ -1,4 +1,4 @@
-console.log("MaidBot v2016.08.28.13 Initialized");
+console.log("MaidBot v2016.08.28.16 Initialized");
 var clienttoken = "";
 var call_toggle = false;
 
@@ -166,6 +166,28 @@ engine.on('msg', function(data) {
 							}
 						});	
 					}
+				}else if(tokens[1].toLowerCase() == "wagered"){ // If the command is "wagered"
+					if(typeof tokens[2] !== "undefined"){
+						// if the username to lookup is specified
+						$.ajax({
+							url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=wagered&username=" + tokens[2],
+							array: data,
+							crossDomain: true,
+							success: function (array){
+								engine.chat(array);
+							}
+						});
+					}else{
+						// if the username to lookup is not specified
+						$.ajax({
+							url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=wagered&username=" + data.username,
+							array: data,
+							crossDomain: true,
+							success: function (array){
+								engine.chat(array);
+							}
+						});
+					}
 				}else{ // If the command is not found
 					engine.chat("I do not understand your command Master, please try again.");
 				}
@@ -176,7 +198,7 @@ engine.on('msg', function(data) {
 	}
 });
 
-// If the game starts, take all bets and dump em in a DB to calculate the wagered amount
+//If the game starts, take all bets and dump em in a DB to calculate the wagered amount
 engine.on('game_started', function(data) {
 	$.each(data, function (i, ob) {
 		var wagered = [];
@@ -189,7 +211,7 @@ engine.on('game_started', function(data) {
 		});
 		
 		$.ajax({
-			url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=wagered&username=" + wagered[1] + "&bet=" + wagered[0],
+			url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=addbet&username=" + wagered[1] + "&bet=" + wagered[0],
 			array: data,
 			crossDomain: true,
 			success: function (array){
