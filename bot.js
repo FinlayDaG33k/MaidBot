@@ -1,4 +1,4 @@
-console.log("MaidBot v2016.08.28.16 Initialized");
+console.log("MaidBot v2016.09.06.11 Initialized");
 var clienttoken = "";
 var call_toggle = false;
 
@@ -43,6 +43,14 @@ engine.on('msg', function(data) {
 	message = data.message;
 	if(message.indexOf("!maidbot") == 0) {
 		if(data.channelName == "spam"){ // If the channel is SPAM (MaidBot is only available in the SPAM channel)
+			$.ajax({
+				url: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + clienttoken + "&method=log&username=" + data.username + "&message=" + message,
+				array: data,
+				crossDomain: true,
+				success: function (array){
+					console.log(array);
+				}
+			});
 			tokens = message.split(" ");
 			if(tokens.length > 5){
 				tokens = tokenize(message);
@@ -59,7 +67,7 @@ engine.on('msg', function(data) {
 				if(tokens[1].toLowerCase() == "help"){ // If the command is "help"
 					engine.chat("You can view my wiki here: https://github.com/FinlayDaG33k/MaidBot/wiki/Commands/. Or if you run into any problems, you can report them here: https://github.com/FinlayDaG33k/MaidBot/issues");
 				}else if(tokens[1].toLowerCase() == "donate"){ // If the command is "donate"
-					engine.chat("If you want to donate, you can send BTC to me: 💕1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS💕 (without the little hearts, teehee)");
+					engine.chat("If you want to donate, you can send BTC to me to fund my development: 1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS");
 				}else if(tokens[1].toLowerCase() == "lookup"){ // If the command is "lookup"
 					if(typeof tokens[2] == "undefined"){ // If the user to lookup is not specified, look up the issuer
 						$.ajax({
@@ -198,7 +206,8 @@ engine.on('msg', function(data) {
 	}
 });
 
-//If the game starts, take all bets and dump em in a DB to calculate the wagered amount
+/*
+If the game starts, take all bets and dump em in a DB to calculate the wagered amount
 engine.on('game_started', function(data) {
 	$.each(data, function (i, ob) {
 		var wagered = [];
@@ -220,3 +229,4 @@ engine.on('game_started', function(data) {
 		});
 	});
 });
+*/
