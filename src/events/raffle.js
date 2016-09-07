@@ -28,7 +28,7 @@ module.exports = {
                             var rand = getRandomInt(0, require("../bot.js").raffle.tickets.length-1);
                             var winner = require("../bot.js").raffle.tickets[rand].username;
                             
-                            require("../bot.js").maidbot.webClient.doSay("[Raffle] @"+winner+" just won the Raffle! | Won amount: "+require("../bot.js").raffle.pot()+" Bits", 'english');
+                            require("../bot.js").maidbot.webClient.doSay(" @"+winner+" just won the Raffle! | He or She won: "+require("../bot.js").raffle.pot()+" Bits!", 'english');
                             
                             try{
                                 // Build the post string from an object
@@ -77,7 +77,7 @@ module.exports = {
                             ticketsFile.writeSync();
                         }else{ // no ticket bought :(
                             require("../bot.js").raffle.canRoll = false;
-                            require("../bot.js").maidbot.webClient.doSay("[Raffle] Not enough tickets bought. No winner today. See you tomorrow!", 'english');
+                            require("../bot.js").maidbot.webClient.doSay("Not enough tickets bought. So no winner today. Please consider buying tickets for tomorrows draw.", 'english');
                         }
                     }
                     
@@ -127,7 +127,7 @@ module.exports = {
                             for(var i=0;i<response.length; i++){
                                 var now = new Date();
                                 if( (new Date(response[i].created)).setHours(0,0,0,0) === (new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds())).setHours(0,0,0,0) ){
-                                    if(response[i].to_username != "DexonBot") return;
+                                    if(response[i].to_username != "MaidBot") return;
                                     
                                     var ticketFound = false;
                                     for(var j=0;j<require("../bot.js").raffle.tickets.length; j++){

@@ -16,7 +16,7 @@ module.exports.raffle;
 
 /* EVENTS
 -----------------*/
-//require("./events/spamCheck.js").exec({initialize: true});
+require("./events/raffle.js").exec({initialize: true});
 
 /* BOT
 -----------------*/
@@ -108,6 +108,9 @@ function DexonBot(){
 					console.log("hi");
 					require("./cmds/rep.js").exec(data,self.Config.CLIENT_TOKEN);
 					break;
+				case "raffle":
+                    require("./cmds/raffle.js").exec(data);
+                    break;
 				default:
 					require("./cmds/unknown.js").exec(data);
 					break;
