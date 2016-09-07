@@ -16,3 +16,4 @@ These are the people that helped me while creating both MaidBot and her characte
 | Nickname  | Done What |
 | ------------- | ------------- |
 | Paladin  | Asked me to Create MaidBot, Helped me thinking of new features|
+| Dexon95  | Created DexonBot (which I have used to create the new MaidBot!)|
