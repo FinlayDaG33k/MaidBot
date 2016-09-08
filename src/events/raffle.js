@@ -13,7 +13,7 @@ module.exports = {
             var lastRaffleTickets = 0;
             
             require("../bot.js").raffle = {
-                minPot: 200,
+                minPot: 0,
         		price: 10,
         		canRoll: true,
         		mustRoll: false,
@@ -77,7 +77,7 @@ module.exports = {
                             ticketsFile.writeSync();
                         }else{ // no ticket bought :(
                             require("../bot.js").raffle.canRoll = false;
-                            require("../bot.js").maidbot.webClient.doSay("Not enough tickets bought. So no winner today. Please consider buying tickets for tomorrows draw.", 'english');
+                            require("../bot.js").maidbot.webClient.doSay("There are not enough tickets bought for today's raffle. So there is no winner today. Please consider buying tickets for tomorrows draw.", 'english');
                         }
                     }
                     

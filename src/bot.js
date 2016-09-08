@@ -20,7 +20,7 @@ require("./events/raffle.js").exec({initialize: true});
 
 /* BOT
 -----------------*/
-function DexonBot(){
+function MaidBot(){
 	console.log("Starting MaidBot v"+process.env.npm_package_version);
 	
     var self = this
@@ -120,7 +120,7 @@ function DexonBot(){
         }
     }
 }
-module.exports.maidbot = new DexonBot();
+module.exports.maidbot = new MaidBot();
 
 /* UNCAUGHT EXCEPTIONS
 -----------------*/

@@ -6,7 +6,8 @@ module.exports = {
         if (typeof data.initialize !== "undefined" && data.initialize) {
             
             var reminders = [
-                "Reminder: If your bustabit password is not unique to this site, CHANGE IT NOW. Password re-use *will* lead to you getting hacked."
+                "May I remind you that if your BustaBit password is not unique on this site, I recommend you to change it now. Password re-use *will* lead to you getting hacked.",
+				""
             ];
             
             setTimeout(function(){

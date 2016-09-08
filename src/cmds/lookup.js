@@ -6,7 +6,6 @@ module.exports = {
         var username = data.username,
             channelName = data.channelName,
             parameters = data.parameters;
-        console.log(parameters);
         if(parameters.length == 1){
 			request({
 				uri: "https://cointrust.xyz/wp-json/wp/v2/profile?slug=" + username,
@@ -16,10 +15,9 @@ module.exports = {
 			}, 
 			function(error, response, data) {
 				if (!error && response.statusCode == 200) {
-					var array = data[0];
-					console.log(array);
+					var array = JSON.parse(data);
 					if(typeof array !== "undefined"){
-						display_lookup_user(array.suspicion,array.uname,array.link);
+						display_lookup_user(array[0].suspicion,array[0].uname,array[0].link,channelName);
 					}else{	
 						require("../bot.js").maidbot.webClient.doSay("I'm sorry, but I could not find you on Cointrust, but you can try to lookup yourself here: https://www.cointrust.xyz/?s=" + data.username, channelName);
 					}
@@ -34,10 +32,11 @@ module.exports = {
 				timeout: 5000,
 				followRedirect: false
 			}, 
-			function(error, response, array) {
+			function(error, response, data) {
 				if (!error && response.statusCode == 200) {
+					var array = JSON.parse(data);
 					if(typeof array !== "undefined"){
-						display_lookup_user(array.suspicion,array.uname,array.link);
+						display_lookup_user(array[0].suspicion,array[0].uname,array[0].link,channelName);
 					}else{	
 						require("../bot.js").maidbot.webClient.doSay("I'm sorry, but I could not find the user you requested, but you can try to lookup the user here: https://www.cointrust.xyz/?s=" + parameters[1], channelName);
 					}
@@ -49,7 +48,7 @@ module.exports = {
     }
 };
 
-function display_lookup_user(suspicion,username,profilelink){
+function display_lookup_user(suspicion,username,profilelink,channelName){
 	if(suspicion == "trustworthy"){
 		require("../bot.js").maidbot.webClient.doSay("I was able to find "+ username +" on Cointrust, and he or she seems to be quite Trustworthy. You can read his or her full profile at: " + profilelink, channelName);
 	}else if(suspicion == "delayed_loan"){
@@ -71,4 +70,5 @@ function display_lookup_user(suspicion,username,profilelink){
 	}else if(suspicion == "none"){
 		require("../bot.js").maidbot.webClient.doSay("I was able to find "+ username +" on Cointrust, but he or she seems to be neutral. You can read his or her full profile at: " + profilelink, channelName);
 	}
+	return;
 }
