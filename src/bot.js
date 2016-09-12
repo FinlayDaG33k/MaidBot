@@ -32,6 +32,7 @@ function MaidBot(){
         WebClient = require('./WebClient');
     
 	var call_toggle = false;
+	var time_last_command = new Date();
 	
     // Set bot's session cookie for connections
     require('socket.io-client-cookie').setCookies('id=' + self.Config.SESSION);
@@ -49,76 +50,77 @@ function MaidBot(){
 	
     // New message in chat.
     self.webClient.on('msg', function(msg) {
-        if(msg.message != null && msg.message != "" && msg.message.indexOf("!maidbot") == 0 && msg.channelName =="spam"){ // User calling a bot command
-            request({
-				uri: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + self.Config.CLIENT_TOKEN + "&method=log&username=" + msg.username + "&message=" + msg.message,
-				method: "GET",
-				timeout: 5000,
-				followRedirect: false
-			});
+		var time_current_command = new Date();
+		if((time_current_command - time_last_command) > 1000){
+			if(msg.message != null && msg.message != "" && msg.message.indexOf("!maidbot") == 0 && msg.channelName =="spam"){ // User calling a bot command
+				request({
+					uri: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + self.Config.CLIENT_TOKEN + "&method=log&username=" + msg.username + "&message=" + msg.message,
+					method: "GET",
+					timeout: 5000,
+					followRedirect: false
+				});
 			
-			try{
-				var cmd = msg.message.split(" ")[1].replace("!maidbot",""),
-					username = msg.username,
-					channelName = 'spam',
+				try{
+					var cmd = msg.message.split(" ")[1].replace("!maidbot",""),
+						username = msg.username,
+						channelName = 'spam',
+						parameters = [];
+				}catch(e){
+					var username = msg.username,
+					channelName = msg.channelName,
 					parameters = [];
-			}catch(e){
-				var username = msg.username,
-				channelName = msg.channelName,
-				parameters = [];
-				require("./cmds/no_command.js").exec(channelName, call_toggle);
-				if(call_toggle == false){
-					call_toggle = true;
-				}else{
-					call_toggle = false;
+					require("./cmds/no_command.js").exec(channelName, call_toggle);
+					if(call_toggle == false){
+						call_toggle = true;
+					}else{
+						call_toggle = false;
+					}
 				}
-			}
-			console.log(username + " issued command: \"" + cmd + "\" in Channel \"" + channelName + "\"");
-            for(var i=1; i<msg.message.split(" ").length; i++){
-                var parameter = msg.message.split(" ")[i];
-                parameters.push(parameter);
-            }
-			if(parameters.length > 4){
-				parameters = tokenizer(msg.message);
-			}
+				console.log(username + " issued command: \"" + cmd + "\" in Channel \"" + channelName + "\"");
+				for(var i=1; i<msg.message.split(" ").length; i++){
+					var parameter = msg.message.split(" ")[i];
+					parameters.push(parameter);
+				}
+				if(parameters.length > 4){
+					parameters = tokenizer(msg.message);
+				}
 
-            self.onCmd(cmd, {
-                username: username,
-                channelName: channelName,
-                msg: msg,
-                parameters: parameters
-            });
-        }
-        
-        //require("./events/spamCheck.js").exec(msg);
-    });
-	
-    self.onCmd = function(cmd, data){
-        try{
-            switch(cmd.toLowerCase()) {
-                case "lookup":
-                    require("./cmds/lookup.js").exec(data);
-                    break;
-				case "help":
-					require("./cmds/help.js").exec(data);
-					break;
-				case "donate":
-					require("./cmds/donate.js").exec(data);
-					break;
-				case "rep":
-					require("./cmds/rep.js").exec(data,self.Config.CLIENT_TOKEN);
-					break;
-				case "raffle":
-                    require("./cmds/raffle.js").exec(data);
-                    break;
-				default:
-					require("./cmds/unknown.js").exec(data);
-					break;
-            }
-        }catch(e){
-            console.error("[onCMD Error] ", e.message);
-        }
-    }
+				self.onCmd(cmd, {
+					username: username,
+					channelName: channelName,
+					msg: msg,
+					parameters: parameters
+				});
+			}
+			//require("./events/spamCheck.js").exec(msg);
+		}
+		self.onCmd = function(cmd, data){
+			try{
+				switch(cmd.toLowerCase()) {
+					case "lookup":
+						require("./cmds/lookup.js").exec(data);
+						break;
+					case "help":
+						require("./cmds/help.js").exec(data);
+						break;
+					case "donate":
+						require("./cmds/donate.js").exec(data);
+						break;
+					case "rep":
+						require("./cmds/rep.js").exec(data,self.Config.CLIENT_TOKEN);
+						break;
+					case "raffle":
+						require("./cmds/raffle.js").exec(data);
+						break;
+					default:
+						require("./cmds/unknown.js").exec(data);
+						break;
+				}	
+			}catch(e){
+				console.error("[onCMD Error] ", e.message);
+			}
+		}
+	});
 }
 
 module.exports.maidbot = new MaidBot();
