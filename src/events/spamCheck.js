@@ -39,8 +39,8 @@ module.exports = {
                         if(spamStreak == 3){
                             spamList[msg.username].muted = true;
                             require("../bot.js").maidbot.webClient.doSay("/mute "+msg.username+" 3m", msg.channelName);
-                            require("../bot.js").maidbot.webClient.doSay("@"+msg.username+" don't spam please.", msg.channelName);
-                            console.log("Muted "+msg.username+" for Spamming channel '"+msg.channelName+"'");
+                            require("../bot.js").maidbot.webClient.doSay("@"+msg.username+" do your spamming stuff here.", 'spam');
+                            //console.log("Muted "+msg.username+" for Spamming channel '"+msg.channelName+"'");
                             
                             setTimeout(function() {
                                 spamList[msg.username] = {};

@@ -6,8 +6,11 @@ module.exports = {
         if (typeof data.initialize !== "undefined" && data.initialize) {
             
             var reminders = [
-                "May I remind you that if your BustaBit password is not unique on this site, I recommend you to change it now. Password re-use *will* lead to you getting hacked.",
-				""
+				"Please don't forget to buy some tickets for tonights Raffle!",
+				"Don't forget to take a break from Bustabit now and then!",
+				"Please do not bet bits you can't afford to lose!",
+				"If you lend out bits, please be careful as there always is a chance to get scammed!",
+				"Know who you're dealing with in the CrypoCommunity, use `!maidbot lookup <username>` before lending somebody bits!"
             ];
             
             setTimeout(function(){
@@ -19,7 +22,7 @@ module.exports = {
             setInterval(function(){
                 var rand = getRandomInt(0, reminders.length-1);
                 doRemind(reminders[rand]);
-            }, (1000*60)*70);
+            }, 600000);
             
         }
         
@@ -28,7 +31,7 @@ module.exports = {
 };
 
 function doRemind(string){
-    require("../bot.js").maidbot.webClient.doSay(string, 'english');
+    require("../bot.js").maidbot.webClient.doSay(string, 'spam');
 }
 
 function getRandomInt(min, max) {

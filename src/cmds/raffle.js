@@ -16,7 +16,7 @@ module.exports = {
             }else if(parameters[1] == "lastwinner" || parameters[1] == "last"){
                 require("../bot.js").maidbot.webClient.doSay("Last times pot winner was "+require("../bot.js").raffle.games.lastWinner+" who won "+require("../bot.js").raffle.games.lastPot+" Bits!", channelName);
             }else if(parameters[1] == "howto" || parameters[1] == "how" || parameters[1] == "buy"){
-                require("../bot.js").maidbot.webClient.doSay("If you want to buy tickets, please send 10 Bits per ticket to this account 'MaidBot' (using https://www.bustabit.com/transfer)", channelName);
+                require("../bot.js").maidbot.webClient.doSay("If you want to buy tickets, please send 100 Bits per ticket to this account 'MaidBot' (using https://www.bustabit.com/transfer)", channelName);
             }else if(parameters[1] == "next"){
                 require("../bot.js").maidbot.webClient.doSay("I will draw the next lucky winner in "+secUntilMidnight()+" seconds!", channelName);
             }else if(parameters[1] == "mytickets" || parameters[1] == "tickets"){
@@ -26,7 +26,7 @@ module.exports = {
 						amount++;
 					}
 				}
-                require("../bot.js").maidbot.webClient.doSay(" @"+username+" currently has "+amount+" tickets!", channelName);
+                require("../bot.js").maidbot.webClient.doSay(" @"+username+" currently has "+amount+" tickets! ("+amount+ "/" + require("../bot.js").raffle.tickets.length + ")", channelName);
             }else if(parameters[1] == "forcedraw" && username == "finlaydag33k"){
                 require("../bot.js").lotto.mustDraw = true;
             }else{

@@ -13,8 +13,8 @@ module.exports = {
             var lastRaffleTickets = 0;
             
             require("../bot.js").raffle = {
-                minPot: 0,
-        		price: 10,
+                minPot: 20,
+        		price: 100,
         		canRoll: true,
         		mustRoll: false,
         		games: ticketsFile.data.game,
@@ -77,7 +77,7 @@ module.exports = {
                             ticketsFile.writeSync();
                         }else{ // no ticket bought :(
                             require("../bot.js").raffle.canRoll = false;
-                            require("../bot.js").maidbot.webClient.doSay("There are not enough tickets bought for today's raffle. So there is no winner today. Please consider buying tickets for tomorrows draw.", 'english');
+                            require("../bot.js").maidbot.webClient.doSay("There are not enough tickets bought for today's raffle. So there is no winner today. Please consider buying tickets for tomorrows draw. (" + require("../bot.js").raffle.tickets.length + "/20 tickets)", 'english');
                         }
                     }
                     
@@ -93,7 +93,7 @@ module.exports = {
             };
             
             require("../bot.js").raffle.pot = function(){ // 1.5% fees
-                var pot = (0.995 * (require("../bot.js").raffle.price * require("../bot.js").raffle.tickets.length));
+                var pot = (0.985 * (require("../bot.js").raffle.price * require("../bot.js").raffle.tickets.length));
                 pot = (pot<require("../bot.js").raffle.minPot?require("../bot.js").raffle.minPot:pot);
                 return pot.toFixed(2);
             };

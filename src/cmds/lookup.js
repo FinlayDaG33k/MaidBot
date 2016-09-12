@@ -16,7 +16,7 @@ module.exports = {
 			function(error, response, data) {
 				if (!error && response.statusCode == 200) {
 					var array = JSON.parse(data);
-					if(typeof array !== "undefined"){
+					if(typeof array[0] !== "undefined"){
 						display_lookup_user(array[0].suspicion,array[0].uname,array[0].link,channelName);
 					}else{	
 						require("../bot.js").maidbot.webClient.doSay("I'm sorry, but I could not find you on Cointrust, but you can try to lookup yourself here: https://www.cointrust.xyz/?s=" + data.username, channelName);
@@ -25,7 +25,7 @@ module.exports = {
 					require("../bot.js").maidbot.webClient.doSay("I'm sorry Master, but I am not able to reach Cointrust by myself. You can try to lookup the user manually: https://www.cointrust.xyz/?s=" + data.username, channelName);
 				}
 			});
-        }else if(parameters.length == 2){ 
+        }else if(parameters.length >= 2){ 
 			request({
 				uri: "https://cointrust.xyz/wp-json/wp/v2/profile?slug=" + parameters[1],
 				method: "GET",
@@ -35,7 +35,7 @@ module.exports = {
 			function(error, response, data) {
 				if (!error && response.statusCode == 200) {
 					var array = JSON.parse(data);
-					if(typeof array !== "undefined"){
+					if(typeof array[0] !== "undefined"){
 						display_lookup_user(array[0].suspicion,array[0].uname,array[0].link,channelName);
 					}else{	
 						require("../bot.js").maidbot.webClient.doSay("I'm sorry, but I could not find the user you requested, but you can try to lookup the user here: https://www.cointrust.xyz/?s=" + parameters[1], channelName);
@@ -44,6 +44,7 @@ module.exports = {
 					require("../bot.js").maidbot.webClient.doSay("I'm sorry Master, but I am not able to reach Cointrust by myself. You can try to lookup the user manually: https://www.cointrust.xyz/?s=" + parameters[1], channelName);
 				}
 			});
+			console.log("https://cointrust.xyz/wp-json/wp/v2/profile?slug=" + parameters[1]);
         }
     }
 };

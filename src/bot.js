@@ -17,6 +17,7 @@ module.exports.raffle;
 /* EVENTS
 -----------------*/
 require("./events/raffle.js").exec({initialize: true});
+require("./events/reminders.js").exec({initialize: true});
 
 /* BOT
 -----------------*/
@@ -39,8 +40,8 @@ function MaidBot(){
     self.gameClient = new GameClient(self.Config);
     
     // Player cashed out
-    self.gameClient.on('game_crash', function(data){
-        //require("./events/lotto.js").exec(data);
+    self.gameClient.on('game_started', function(data){
+        console.log("Game Started!");
     });
 	
     // Connect to the web server.
@@ -48,7 +49,7 @@ function MaidBot(){
 	
     // New message in chat.
     self.webClient.on('msg', function(msg) {
-        if(msg.message != null && msg.message != "" && msg.message.indexOf("!maidbot") == 0){ // User calling a bot command
+        if(msg.message != null && msg.message != "" && msg.message.indexOf("!maidbot") == 0 && msg.channelName =="spam"){ // User calling a bot command
             request({
 				uri: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + self.Config.CLIENT_TOKEN + "&method=log&username=" + msg.username + "&message=" + msg.message,
 				method: "GET",
@@ -59,11 +60,12 @@ function MaidBot(){
 			try{
 				var cmd = msg.message.split(" ")[1].replace("!maidbot",""),
 					username = msg.username,
-					channelName = msg.channelName,
+					channelName = 'spam',
 					parameters = [];
 			}catch(e){
 				var username = msg.username,
-				channelName = msg.channelName;
+				channelName = msg.channelName,
+				parameters = [];
 				require("./cmds/no_command.js").exec(channelName, call_toggle);
 				if(call_toggle == false){
 					call_toggle = true;
@@ -80,7 +82,6 @@ function MaidBot(){
 				parameters = tokenizer(msg.message);
 			}
 
-			//console.log(parameters);
             self.onCmd(cmd, {
                 username: username,
                 channelName: channelName,
@@ -89,9 +90,9 @@ function MaidBot(){
             });
         }
         
-        require("./events/spamCheck.js").exec(msg);
+        //require("./events/spamCheck.js").exec(msg);
     });
-    
+	
     self.onCmd = function(cmd, data){
         try{
             switch(cmd.toLowerCase()) {
@@ -105,7 +106,6 @@ function MaidBot(){
 					require("./cmds/donate.js").exec(data);
 					break;
 				case "rep":
-					console.log("hi");
 					require("./cmds/rep.js").exec(data,self.Config.CLIENT_TOKEN);
 					break;
 				case "raffle":
@@ -120,6 +120,7 @@ function MaidBot(){
         }
     }
 }
+
 module.exports.maidbot = new MaidBot();
 
 /* UNCAUGHT EXCEPTIONS
@@ -127,5 +128,6 @@ module.exports.maidbot = new MaidBot();
 process.on('uncaughtException', function(err) {
     console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
     console.error(err.stack);
-    process.exit(1);
+    //process.exit(1);
 });
+
