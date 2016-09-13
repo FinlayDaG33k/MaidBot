@@ -27,8 +27,10 @@ module.exports = {
 					}
 				}
                 require("../bot.js").maidbot.webClient.doSay(" @"+username+" currently has "+amount+" tickets! ("+amount+ "/" + require("../bot.js").raffle.tickets.length + ")", channelName);
-            }else if(parameters[1] == "forcedraw" && username == "finlaydag33k"){
-                require("../bot.js").lotto.mustDraw = true;
+            }else if(parameters[1] == "forcedraw" && username.toLowerCase() == "finlaydag33k"){
+				// do not use this command... seriously...
+				
+                require("../bot.js").raffle.mustRoll = true;
             }else{
                 require("../bot.js").maidbot.webClient.doSay("I see you are interested in the Raffle Master? Please type '!maidbot raffle help' if you wish for more details about the Raffle.", channelName);
             }

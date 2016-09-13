@@ -32,7 +32,7 @@ function MaidBot(){
         WebClient = require('./WebClient');
     
 	var call_toggle = false;
-	var time_last_command = new Date();
+	var time_last_command = new Date().getTime();
 	
     // Set bot's session cookie for connections
     require('socket.io-client-cookie').setCookies('id=' + self.Config.SESSION);
@@ -50,9 +50,10 @@ function MaidBot(){
 	
     // New message in chat.
     self.webClient.on('msg', function(msg) {
-		var time_current_command = new Date();
-		if((time_current_command - time_last_command) > 1000){
-			if(msg.message != null && msg.message != "" && msg.message.indexOf("!maidbot") == 0 && msg.channelName =="spam"){ // User calling a bot command
+		var time_current_command = new Date().getTime();
+		if(msg.message != null && msg.message != "" && msg.message.indexOf("!maidbot") == 0 && msg.channelName =="spam"){ // User calling a bot command
+			if((time_current_command - time_last_command) > 1000){
+				time_last_command = new Date().getTime();
 				request({
 					uri: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + self.Config.CLIENT_TOKEN + "&method=log&username=" + msg.username + "&message=" + msg.message,
 					method: "GET",
@@ -94,33 +95,34 @@ function MaidBot(){
 			}
 			//require("./events/spamCheck.js").exec(msg);
 		}
-		self.onCmd = function(cmd, data){
-			try{
-				switch(cmd.toLowerCase()) {
-					case "lookup":
-						require("./cmds/lookup.js").exec(data);
-						break;
-					case "help":
-						require("./cmds/help.js").exec(data);
-						break;
-					case "donate":
-						require("./cmds/donate.js").exec(data);
-						break;
-					case "rep":
-						require("./cmds/rep.js").exec(data,self.Config.CLIENT_TOKEN);
-						break;
-					case "raffle":
-						require("./cmds/raffle.js").exec(data);
-						break;
-					default:
-						require("./cmds/unknown.js").exec(data);
-						break;
-				}	
-			}catch(e){
-				console.error("[onCMD Error] ", e.message);
-			}
-		}
 	});
+	
+	self.onCmd = function(cmd, data){
+		try{
+			switch(cmd.toLowerCase()) {
+				case "lookup":
+					require("./cmds/lookup.js").exec(data);
+					break;
+				case "help":
+					require("./cmds/help.js").exec(data);
+					break;
+				case "donate":
+					require("./cmds/donate.js").exec(data);
+					break;
+				case "rep":
+					require("./cmds/rep.js").exec(data,self.Config.CLIENT_TOKEN);
+					break;
+				case "raffle":
+					require("./cmds/raffle.js").exec(data);
+					break;
+				default:
+					require("./cmds/unknown.js").exec(data);
+					break;
+			}	
+		}catch(e){
+			console.error("[onCMD Error] ", e.message);
+		}
+	}
 }
 
 module.exports.maidbot = new MaidBot();
