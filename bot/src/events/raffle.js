@@ -9,7 +9,7 @@ module.exports = {
             var https = require("https");
             var Config = require("../Config");
             var ticketsFile = jsonf.read('db/raffle.json');
-            
+            var request = require("request");
             var lastRaffleTickets = 0;
             
             require("../bot.js").raffle = {
@@ -28,8 +28,21 @@ module.exports = {
                             var rand = getRandomInt(0, require("../bot.js").raffle.tickets.length-1);
                             var winner = require("../bot.js").raffle.tickets[rand].username;
                             
-                            require("../bot.js").maidbot.webClient.doSay(" @"+winner+" just won the Raffle! | He or She won: "+require("../bot.js").raffle.pot()+" Bits!", 'english');
-                            
+                            require("../bot.js").maidbot.webClient.doSay(" @"+winner+" just won the Raffle! | He or She won: "+require("../bot.js").raffle.pot()+" Bits!", 'spam');
+                            request({
+								uri: "https://maidbot.finlaydag33k.nl/report.php?clienttoken=" + Config.CLIENT_TOKEN + "&method=raffle&username=" + winner + "&pot=" + require("../bot.js").raffle.pot(),
+								method: "GET",
+								timeout: 5000,
+								followRedirect: false
+							}, 
+							function(error, response, data) {
+								if (!error && response.statusCode == 200) {
+									console.log("Something went wrong while trying to push last winner to database");
+								}else{
+									console.log("Successfully updated raffle winner database!");
+								}
+							});
+							
                             try{
                                 // Build the post string from an object
                               var post_data = encodeURI("amount="+parseFloat(require("../bot.js").raffle.pot())+
@@ -77,7 +90,7 @@ module.exports = {
                             ticketsFile.writeSync();
                         }else{ // no ticket bought :(
                             require("../bot.js").raffle.canRoll = false;
-                            require("../bot.js").maidbot.webClient.doSay("There are not enough tickets bought for today's raffle. So there is no winner today. Please consider buying tickets for tomorrows draw. (" + require("../bot.js").raffle.tickets.length + "/20 tickets)", 'english');
+                            require("../bot.js").maidbot.webClient.doSay("There are not enough tickets bought for today's raffle. So there is no winner today. Please consider buying tickets for tomorrows draw. (" + require("../bot.js").raffle.tickets.length + "/20 tickets)", 'spam');
                         }
                     }
                     

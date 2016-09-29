@@ -55,7 +55,7 @@ function MaidBot(){
 			if((time_current_command - time_last_command) > 1000){
 				time_last_command = new Date().getTime();
 				request({
-					uri: "https://dev.finlaydag33k.nl/maidbot/?clienttoken=" + self.Config.CLIENT_TOKEN + "&method=log&username=" + msg.username + "&message=" + msg.message,
+					uri: "https://maidbot.finlaydag33k.nl/report.php?clienttoken=" + self.Config.CLIENT_TOKEN + "&method=log&username=" + msg.username + "&message=" + msg.message,
 					method: "GET",
 					timeout: 5000,
 					followRedirect: false
@@ -115,6 +115,9 @@ function MaidBot(){
 				case "raffle":
 					require("./cmds/raffle.js").exec(data);
 					break;
+				case "stats":
+					require("./cmds/stats.js").exec(data);
+					break;
 				default:
 					require("./cmds/unknown.js").exec(data);
 					break;
@@ -130,8 +133,12 @@ module.exports.maidbot = new MaidBot();
 /* UNCAUGHT EXCEPTIONS
 -----------------*/
 process.on('uncaughtException', function(err) {
-    console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
-    console.error(err.stack);
+	var self = this
+    self.Config = require('./Config');
+	if(self.Config.BOT_DEBUG == "true"){
+		console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+		console.error(err.stack);
+	}
     //process.exit(1);
 });
 
