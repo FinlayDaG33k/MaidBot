@@ -22,7 +22,7 @@ module.exports = {
             setInterval(function(){
                 var rand = getRandomInt(0, reminders.length-1);
                 doRemind(reminders[rand]);
-            }, 600000);
+            }, 3600000);
             
         }
         

@@ -52,7 +52,7 @@ function MaidBot(){
     self.webClient.on('msg', function(msg) {
 		var time_current_command = new Date().getTime();
 		if(msg.message != null && msg.message != "" && msg.message.indexOf("!maidbot") == 0 && msg.channelName =="spam"){ // User calling a bot command
-			if((time_current_command - time_last_command) > 1000){
+			if((time_current_command - time_last_command) > 1500){
 				time_last_command = new Date().getTime();
 				request({
 					uri: "https://maidbot.finlaydag33k.nl/report.php?clienttoken=" + self.Config.CLIENT_TOKEN + "&method=log&username=" + msg.username + "&message=" + msg.message,

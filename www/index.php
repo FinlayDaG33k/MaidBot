@@ -26,11 +26,11 @@ if ($conn->connect_error) {
 	
 	<div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Commands last week</h3>
+    <h3 class="panel-title">Commands last week <span class="badge">5</span></h3>
   </div>
   <div class="panel-body">
     <?php
-$sql = "SELECT * FROM daily_usages WHERE Date LIKE '".date("Y-m")."%' ORDER BY Date DESC LIMIT 7";
+$sql = "SELECT * FROM daily_usages WHERE `Date` BETWEEN '".date("Y-m-d", strtotime("-7 days")) ."' AND '".date("Y-m-d")."' ORDER by `Date` DESC LIMIT 7;";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -109,7 +109,7 @@ if ($result->num_rows > 0) {
 
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title"> 10 Most Reputable Users</h3>
+    <h3 class="panel-title"> 10 Most Reputable Users <span class="badge">5</span></h3>
   </div>
   <div class="panel-body">
     <?php
@@ -186,7 +186,7 @@ if ($result->num_rows > 0) {
 
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">10 Least Reputable Users</h3>
+    <h3 class="panel-title">10 Least Reputable Users <span class="badge">5</span></h3>
   </div>
   <div class="panel-body">
     <?php
@@ -266,11 +266,11 @@ if ($result->num_rows > 0) {
 
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Daily Usage Graph (Dev)</h3>
+    <h3 class="panel-title">Monthly Usage Graph <span class="badge">5</span></h3>
   </div>
   <div class="panel-body">
   <?php
-	$sql = "SELECT * FROM daily_usages WHERE Date LIKE '".date("Y-m")."%' ORDER BY Date DESC";
+	$sql = "SELECT * FROM daily_usages WHERE `Date` BETWEEN '".date("Y-m-d", strtotime("-30 days")) ."' AND '".date("Y-m-d", strtotime("+1 days"))."' ORDER by `Date` ASC LIMIT 30;";
 	$result = $conn->query($sql);
 	if ($result->num_rows > 0) {
 		?>
@@ -283,12 +283,14 @@ if ($result->num_rows > 0) {
 							data: <?php $prefix = '';
 							echo "[";
 							$counter = 0;
+							$total_uses = 0;
 							while($row = $result->fetch_assoc()){
 								$counter++;
+								$total_uses = $total_uses + $row['Uses'];
 								echo $prefix . " {";
 								echo '  "Date": "' . $row['Date'] . '",' . "";
 								echo '  "Uses": "' . $row['Uses'] . '",' . "";
-								echo ' 	"Average": "' . number_format($row['Uses'] / $counter, 2) . '"' . "";
+								echo ' 	"Average": "' . number_format($total_uses / $counter, 2) . '"' . "";
 								echo " }";
 								$prefix = ",";
 							}
@@ -299,6 +301,7 @@ if ($result->num_rows > 0) {
 					});  
 				});
 			});
+		
 		</script>
 	<div id="line-example" style="height: 300px;"></div>
 		<?php
@@ -407,6 +410,22 @@ if ($result->num_rows > 0) {
 ?>
   </div>
   </div>
+  
+  <div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Made Possible By</h3>
+  </div>
+  <div class="panel-body">
+	<a href="https://www.cloudflare.com" target="_new"><img style="max-width:125px;" src="https://www.cloudflare.com/img/logo-cloudflare-dark.svg"></a>
+	<a href="https://www.finlaydag33k.nl" target="_new"><img style="max-width:125px;" src="https://www.finlaydag33k.nl/wp-content/uploads/2016/08/cropped-logo-FDG-300-01.png"></a>
+	<a href="https://jquery.com" target="_new"><img style="max-width:125px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/JQuery_logo_text.svg/420px-JQuery_logo_text.svg.png"></a>
+	<a href="https://php.net" target="_new"><img style="max-width:125px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/711px-PHP-logo.svg.png"></a>
+	<a href="https://nodejs.org/" target="_new"><img style="max-width:125px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/553px-Node.js_logo.svg.png"></a>
+	<a href="https://getbootstrap.com/" target="_new"><img style="max-width:125px;" src="https://avatars3.githubusercontent.com/u/2918581?v=3&s=200"></a>
+	<a href="https://www.github.com" target="_new"><img style="max-width:125px;" src="https://major.io/wp-content/uploads/2014/08/github.png"></a>
+  </div>
+  </div>
+  
 	</div>
 </div>
 <?php

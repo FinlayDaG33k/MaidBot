@@ -3,7 +3,6 @@ header("Access-Control-Allow-Origin: *");
 
 // Banlist of inappropriate words
 $banlist = json_decode(file_get_contents('banlist.json'));
-
 require('config.php');
 
 // Validate the data recieved from the client
@@ -62,6 +61,7 @@ if(isset($_GET['command'])){
 
 if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 	if($method == "rep"){
+		
 		if($rep == "+"){
 			if(strtolower($issuer) !== $username){
 				$conn = new mysqli($sql_servername, $sql_username, $sql_password, $sql_dbname);
@@ -95,21 +95,46 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 				if ($conn->connect_error) {
 					die("Connection failed: " . $conn->connect_error);
 				} 
-			
-				$sql = "SELECT * FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."';";
+				
+				$sql = "SELECT * FROM rep_count WHERE `Username`='".$username."';";
 				$sql_output = $conn->query($sql);
-				if ($sql_output->num_rows > 0) { 
-					// If the issuer already gave rep to the reciever, update it instead.
-					$sql = "UPDATE rep SET Username='" . mysqli_real_escape_string($conn,$username) . "',Rep='-', Reason='".mysqli_real_escape_string($conn,$message)."', Giver='".mysqli_real_escape_string($conn,$issuer)."'WHERE Username='" . mysqli_real_escape_string($conn,$username) . "' AND Giver='".mysqli_real_escape_string($conn,$issuer)."'";
-					if ($conn->query($sql) === TRUE) {
-						echo "I am happy to inform you that I managed to update " . $username . "'s record Master.";
+				if ($sql_output->num_rows > 0){
+					$row = $sql_output->fetch_assoc();
+					if($row['Count'] < -3){
+						echo "I'm sorry, but giving negative reputation to people is disabled for you. Please get more positive reputation first then try again.";
+					}else{
+						$sql = "SELECT * FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."';";
+						$sql_output = $conn->query($sql);
+						if ($sql_output->num_rows > 0) { 
+							// If the issuer already gave rep to the reciever, update it instead.
+							$sql = "UPDATE rep SET Username='" . mysqli_real_escape_string($conn,$username) . "',Rep='-', Reason='".mysqli_real_escape_string($conn,$message)."', Giver='".mysqli_real_escape_string($conn,$issuer)."'WHERE Username='" . mysqli_real_escape_string($conn,$username) . "' AND Giver='".mysqli_real_escape_string($conn,$issuer)."'";
+							if ($conn->query($sql) === TRUE) {
+								echo "I am happy to inform you that I managed to update " . $username . "'s record Master.";
+							}
+						}else{
+							// If the issuer did not gave rep to the reciever already
+							$sql = "INSERT INTO rep (Username, Rep, Reason, Giver)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','-', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."')";
+							if ($conn->query($sql) === TRUE) {
+								echo "I am happy to inform you that I managed to add reputation to " . $username . "'s record Master.";
+							}
+						}
 					}
 				}else{
-					// If the issuer did not gave rep to the reciever already
-					$sql = "INSERT INTO rep (Username, Rep, Reason, Giver)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','-', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."')";
-					if ($conn->query($sql) === TRUE) {
-						echo "I am happy to inform you that I managed to add reputation to " . $username . "'s record Master.";
-					}
+					$sql = "SELECT * FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."';";
+						$sql_output = $conn->query($sql);
+						if ($sql_output->num_rows > 0) { 
+							// If the issuer already gave rep to the reciever, update it instead.
+							$sql = "UPDATE rep SET Username='" . mysqli_real_escape_string($conn,$username) . "',Rep='-', Reason='".mysqli_real_escape_string($conn,$message)."', Giver='".mysqli_real_escape_string($conn,$issuer)."'WHERE Username='" . mysqli_real_escape_string($conn,$username) . "' AND Giver='".mysqli_real_escape_string($conn,$issuer)."'";
+							if ($conn->query($sql) === TRUE) {
+								echo "I am happy to inform you that I managed to update " . $username . "'s record Master.";
+							}
+						}else{
+							// If the issuer did not gave rep to the reciever already
+							$sql = "INSERT INTO rep (Username, Rep, Reason, Giver)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','-', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."')";
+							if ($conn->query($sql) === TRUE) {
+								echo "I am happy to inform you that I managed to add reputation to " . $username . "'s record Master.";
+							}
+						}
 				}
 			}else{
 				echo "I'm sorry master, but you can't choose your own reputation.";
