@@ -37,7 +37,7 @@ module.exports = {
 					}
 				}else{
 					request({
-						uri: Config.MAIDBOTSERVER + "/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + encodeURIComponent(parameters[1]) + "&rep=ls&message=&issuer=" + username,
+						uri: Config.MAIDBOTSERVER + "/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + encodeURIComponent(parameters[1]) + "&rep=count&message=&issuer=" + username,
 						method: "GET",
 						timeout: 5000,
 						followRedirect: false

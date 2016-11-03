@@ -117,6 +117,9 @@ function MaidBot(){
 				case "stats":
 					require("./cmds/stats.js").exec(data);
 					break;
+				case "profile":
+					require("./cmds/profile.js").exec(data);
+					break;
 				default:
 					require("./cmds/unknown.js").exec(data);
 					break;
