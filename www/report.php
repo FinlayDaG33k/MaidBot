@@ -220,7 +220,7 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 			if ($sql_output->num_rows > 0) { 
 				echo $username . " has this reputation: ";
 				while($row = $sql_output->fetch_row()){
-					echo $row[0] . "(". $row[1] . ") ";
+					echo $row[0] . "". $row[1] . " ";
 				}
 			}else{
 				echo "I'm sorry, but this user has no reputation yet.";

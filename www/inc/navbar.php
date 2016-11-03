@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#"><b>MaidBot</b></a>
+      <a class="navbar-brand" href="/"><b>MaidBot</b></a>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -17,7 +17,7 @@
       </ul>
       <form class="navbar-form navbar-left" role="search" action="index.php">
         <div class="form-group">
-          <input type="text" name="username" class="form-control" placeholder="Search User (TODO)">
+          <input type="text" name="username" class="form-control" placeholder="Search User (WIP)">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>

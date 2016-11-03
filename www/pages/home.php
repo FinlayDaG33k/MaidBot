@@ -1,4 +1,180 @@
 <div class="container-fluid">
+<?php
+if(!empty($_GET['username'])){
+?>
+
+<h1>Viewing Data for <?= htmlentities($_GET['username']); ?></h1>
+<hr>
+
+<div class="row">
+	<div class="col-md-2">
+		<div class="bs-component">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Statistics for <?= htmlentities($_GET['username']); ?></h3>
+				</div>
+				<div class="panel-body">
+					<?php
+						$array = [];
+						$sql = "SELECT Rep,COUNT(*) as count FROM rep WHERE Username='".mysqli_real_escape_string($conn,$_GET['username'])."' GROUP BY Rep ORDER BY count DESC;";
+						$sql_output = $conn->query($sql);
+						if ($sql_output->num_rows > 0) { 
+							while($row = $sql_output->fetch_row()){
+								$array["rep_received_" . $row[0]] = $row[1];
+							}
+							
+						}else{
+							$array["rep_received_+"] = "User Not Seen!";
+							$array["rep_received_-"] = "User Not Seen!";
+						}
+						
+						$sql = "SELECT Command,COUNT(*) as count FROM logs WHERE Username='".mysqli_real_escape_string($conn,$_GET['username'])."' GROUP BY Command ORDER BY count DESC LIMIT 1;";
+						$sql_output = $conn->query($sql);
+						if ($sql_output->num_rows > 0) { 
+							while($row = $sql_output->fetch_row()){
+								$array["fav_command"] = $row[0];
+								$array["fav_command_uses"] = $row[1];
+							}
+							
+						}else{
+							$array["fav_command"] = "User Not Seen!";
+							$array["fav_command_uses"] = "User Not Seen!";
+						}
+						
+						$sql = "SELECT Rep,COUNT(*) as count FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$_GET['username'])."' GROUP BY Rep ORDER BY count DESC;";
+						$sql_output = $conn->query($sql);
+						if ($sql_output->num_rows > 0) { 
+							while($row = $sql_output->fetch_row()){
+								$array["rep_given_" . $row[0]] = $row[1];
+							}
+							
+						}else{
+							$array["rep_given_+"] = "User Not Seen!";
+							$array["rep_given_-"] = "User Not Seen!";
+						}
+						
+						?>
+						<table class="table table-striped table-hover">
+							<tr>
+								<td>Positive Reputation Received:</td>
+								<td><?= $array['rep_received_+']; ?></td>
+							</tr>
+							<tr>
+								<td>Negative Reputation Received:</td>
+								<td><?= $array['rep_received_-']; ?></td>
+							</tr>
+							<tr>
+								<td>Positive Reputation Given:</td>
+								<td><?= $array['rep_given_+']; ?></td>
+							</tr>
+							<tr>
+								<td>Negative Reputation Given:</td>
+								<td><?= $array['rep_given_-']; ?></td>
+							</tr>
+							<tr>
+								<td>Favorite Command:</td>
+								<td><?= $array['fav_command']; ?></td>
+							</tr>
+							<tr>
+								<td>Favorite Command Uses:</td>
+								<td><?= $array['fav_command_uses']; ?></td>
+							</tr>
+						</table>
+						<?php
+						//print_r($array);
+					?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="bs-component">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Reputations Received</h3>
+				</div>
+				<div class="panel-body">
+					<?php
+						$sql = "SELECT * FROM `rep` WHERE `Username`='".mysqli_real_escape_string($conn,$_GET['username'])."' ORDER BY RAND() LIMIT 20;";
+						$result = $conn->query($sql);
+						if ($result->num_rows > 0) {
+							// output data of each row
+					?>
+							<table class="table table-striped table-hover">
+								<tr>
+									<th>Giver</th>
+									<th>Reputation</th>
+									<th>Message</th>
+								</tr>
+					<?php
+							while($row = $result->fetch_assoc()) {
+					?>
+								<tr>
+									<td><?= $row["Giver"]; ?></td>
+									<td><?= $row["Rep"]; ?></td>
+									<td><?= $row["Reason"]; ?></td>
+								</tr>
+					<?php
+							}
+					?>
+							</table>
+					<?php
+						} else {
+							echo "No statistics available..";
+						}
+					?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="bs-component">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Reputations Given</h3>
+				</div>
+				<div class="panel-body">
+					<?php
+						$sql = "SELECT * FROM `rep` WHERE `Giver`='".mysqli_real_escape_string($conn,$_GET['username'])."' ORDER BY RAND() LIMIT 20;";
+						$result = $conn->query($sql);
+						if ($result->num_rows > 0) {
+							// output data of each row
+					?>
+							<table class="table table-striped table-hover">
+								<tr>
+									<th>Receiver</th>
+									<th>Reputation</th>
+									<th>Message</th>
+								</tr>
+					<?php
+							while($row = $result->fetch_assoc()) {
+					?>
+								<tr>
+									<td><?= $row["Username"]; ?></td>
+									<td><?= $row["Rep"]; ?></td>
+									<td><?= $row["Reason"]; ?></td>
+								</tr>
+					<?php
+							}
+					?>
+							</table>
+					<?php
+						} else {
+							echo "No statistics available..";
+						}
+					?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<?php
+}else{
+?>
 	<div class="row">
 		<div class="col-md-2">
 			<!-- Begin Commands last week -->
@@ -330,4 +506,5 @@
 			<!-- End Made Possible By -->
 		</div>
 	</div>
+	<?php } ?>
 </div>
