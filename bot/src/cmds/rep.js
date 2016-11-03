@@ -6,7 +6,7 @@ module.exports = {
         var username = data.username,
             channelName = data.channelName,
             parameters = data.parameters;
-			console.log(parameters);
+			var Config = require("../Config");
 			if(typeof parameters[1] !== "undefined"){
 				if(parameters[1].toLowerCase() == "maidbot" && parameters[2] == "+"){
 					require("../bot.js").maidbot.webClient.doSay("I am glad to hear that you like my service Master.",channelName);
@@ -16,7 +16,7 @@ module.exports = {
 				if(typeof parameters[2] !== "undefined"){
 					if(typeof parameters[3] !== "undefined"){
 						request({
-							uri: "https://maidbot.finlaydag33k.nl/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + parameters[1] + "&rep=" + encodeURIComponent(parameters[2]) + "&message=" + parameters[3] + "&issuer=" + data.username,
+							uri: Config.MAIDBOTSERVER + "/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + encodeURIComponent(parameters[1]) + "&rep=" + encodeURIComponent(parameters[2]) + "&message=" + parameters[3] + "&issuer=" + data.username,
 							method: "GET",
 							timeout: 5000,
 							followRedirect: false
@@ -26,7 +26,7 @@ module.exports = {
 						});
 					}else{
 						request({
-							uri: "https://maidbot.finlaydag33k.nl/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + parameters[1] + "&rep=" + encodeURIComponent(parameters[2]) + "&message=&issuer=" + data.username,
+							uri: Config.MAIDBOTSERVER + "/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + encodeURIComponent(parameters[1]) + "&rep=" + encodeURIComponent(parameters[2]) + "&message=&issuer=" + data.username,
 							method: "GET",
 							timeout: 5000,
 							followRedirect: false
@@ -37,7 +37,7 @@ module.exports = {
 					}
 				}else{
 					request({
-						uri: "https://maidbot.finlaydag33k.nl/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + parameters[1] + "&rep=ls&message=&issuer=" + username,
+						uri: Config.MAIDBOTSERVER + "/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + encodeURIComponent(parameters[1]) + "&rep=ls&message=&issuer=" + username,
 						method: "GET",
 						timeout: 5000,
 						followRedirect: false
@@ -48,7 +48,7 @@ module.exports = {
 				}
 			}else{
 				request({
-					uri: "https://maidbot.finlaydag33k.nl/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + username + "&rep=ls&issuer=" + username,
+					uri: Config.MAIDBOTSERVER + "/report.php?clienttoken=" + clienttoken + "&method=rep&username=" + encodeURIComponent(username) + "&rep=ls&issuer=" + username,
 					method: "GET",
 					timeout: 5000,
 					followRedirect: false

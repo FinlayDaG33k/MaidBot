@@ -13,7 +13,7 @@ module.exports = {
             var lastRaffleTickets = 0;
             
             require("../bot.js").raffle = {
-                minPot: 20,
+                minPot: 500,
         		price: 100,
         		canRoll: true,
         		mustRoll: false,
@@ -22,7 +22,7 @@ module.exports = {
                 timer: setInterval(function() {
                     
                     if((secUntilMidnight() >= 0 && secUntilMidnight() <= 6 && require("../bot.js").raffle.canRoll) || require("../bot.js").raffle.mustRoll){ // lottery roll !
-                        if(require("../bot.js").raffle.tickets.length > 20){
+                        if(require("../bot.js").raffle.tickets.length > 500){
                             require("../bot.js").raffle.canRoll = false;
                             require("../bot.js").raffle.mustRoll = false;
                             var rand = getRandomInt(0, require("../bot.js").raffle.tickets.length-1);
@@ -30,7 +30,7 @@ module.exports = {
                             
                             require("../bot.js").maidbot.webClient.doSay(" @"+winner+" just won the Raffle! | He or She won: "+require("../bot.js").raffle.pot()+" Bits!", 'spam');
                             request({
-								uri: "https://maidbot.finlaydag33k.nl/report.php?clienttoken=" + Config.CLIENT_TOKEN + "&method=raffle&username=" + winner + "&pot=" + require("../bot.js").raffle.pot(),
+								uri: Config.MAIDBOTSERVER + "/report.php?clienttoken=" + Config.CLIENT_TOKEN + "&method=raffle&username=" + winner + "&pot=" + require("../bot.js").raffle.pot(),
 								method: "GET",
 								timeout: 5000,
 								followRedirect: false

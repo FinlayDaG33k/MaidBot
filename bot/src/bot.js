@@ -55,12 +55,11 @@ function MaidBot(){
 			if((time_current_command - time_last_command) > 1500){
 				time_last_command = new Date().getTime();
 				request({
-					uri: "https://maidbot.finlaydag33k.nl/report.php?clienttoken=" + self.Config.CLIENT_TOKEN + "&method=log&username=" + msg.username + "&message=" + msg.message,
+					uri: self.Config.MAIDBOTSERVER + "/report.php?clienttoken=" + self.Config.CLIENT_TOKEN + "&method=log&username=" + msg.username + "&message=" + encodeURIComponent(msg.message),
 					method: "GET",
 					timeout: 5000,
 					followRedirect: false
 				});
-			
 				try{
 					var cmd = msg.message.split(" ")[1].replace("!maidbot",""),
 						username = msg.username,
