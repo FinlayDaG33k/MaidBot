@@ -1,0 +1,74 @@
+  	<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Donations</h3>
+  </div>
+  <div class="panel-body">
+  <table class="table table-striped table-hover">
+		<tr>
+			<td>Total Donations in BTC: </td>
+			<td><i class="fa fa-btc" aria-hidden="true"></i> <?php
+  $wallet = json_decode(file_get_contents('https://blockchain.info/address/1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS?format=json'));
+  //print_r($wallet);
+  echo number_format($wallet->total_received / 100000000,5);
+  ?></td>
+		</tr>
+		<tr>
+			<td>Total Donations in Bits: </td>
+			<td><?php echo $wallet->total_received / 100; ?> Bits</td>
+		</tr>
+		<tr>
+			<td>Total Donations in EUR: </td>
+			<td><i class="fa fa-eur" aria-hidden="true"></i> <?php
+				$currencies = json_decode(file_get_contents('https://blockchain.info/ticker'));
+				echo number_format(($wallet->total_received / 100000000) * $currencies->EUR->sell,2);
+  ?></td>
+		</tr>
+		<tr>
+			<td>Total Donations in USD: </td>
+			<td><i class="fa fa-usd" aria-hidden="true"></i> <?php
+				echo number_format(($wallet->total_received / 100000000) * $currencies->USD->sell,2) ;
+  ?></td>
+		</tr>
+
+  </table>
+  </div>
+  </div>
+  
+  <div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Last Raffle Winners</h3>
+  </div>
+  <div class="panel-body">
+  <?php
+$sql = "SELECT * FROM raffle_winners ORDER BY Date DESC LIMIT 10;";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+	?>
+	<table class="table table-striped table-hover">
+		<tr>
+			<th>Username</th>
+			<th>Pot</th>
+			<th>Date</th>
+		</tr>
+	<?php
+    while($row = $result->fetch_assoc()) {
+		 
+		?>
+		<tr>
+			<td><?= $row["Username"]; ?></td>
+			<td><?= $row["Pot"] ;?></td>
+			<td><?= $row["Date"]; ?></td>
+		</tr>
+		<?php
+    }
+	?>
+	</table>
+	<?php
+} else {
+    echo "No statistics available..";
+}
+?>
+  </div>
+  </div>
