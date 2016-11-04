@@ -3,11 +3,35 @@
 if(!empty($_GET['username'])){
 ?>
 
+<style>
+.fa-exclamation-triangle {
+	color: #e95420;
+    font-size: 25px;
+    vertical-align: middle;
+    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.65);
+}
+
+.fa-trophy {
+	color: #38b44a;
+    font-size: 25px;
+    vertical-align: middle;
+    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.65);
+}
+
+.fa-question {
+    font-size: 25px;
+    vertical-align: middle;
+    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.65);
+}
+
+
+</style>
+
 <h1>Viewing Data for <?= htmlentities($_GET['username']); ?></h1>
 <hr>
 
 <div class="row">
-	<div class="col-md-2">
+	<div class="col-md-4">
 		<div class="bs-component">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
@@ -24,8 +48,8 @@ if(!empty($_GET['username'])){
 							}
 							
 						}else{
-							$array["rep_received_+"] = "User Not Seen!";
-							$array["rep_received_-"] = "User Not Seen!";
+							$array["rep_received_+"] = "0";
+							$array["rep_received_-"] = "0";
 						}
 						
 						$sql = "SELECT Command,COUNT(*) as count FROM logs WHERE Username='".mysqli_real_escape_string($conn,$_GET['username'])."' GROUP BY Command ORDER BY count DESC LIMIT 1;";
@@ -37,8 +61,8 @@ if(!empty($_GET['username'])){
 							}
 							
 						}else{
-							$array["fav_command"] = "User Not Seen!";
-							$array["fav_command_uses"] = "User Not Seen!";
+							$array["fav_command"] = "";
+							$array["fav_command_uses"] = "";
 						}
 						
 						$sql = "SELECT Rep,COUNT(*) as count FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$_GET['username'])."' GROUP BY Rep ORDER BY count DESC;";
@@ -49,10 +73,15 @@ if(!empty($_GET['username'])){
 							}
 							
 						}else{
-							$array["rep_given_+"] = "User Not Seen!";
-							$array["rep_given_-"] = "User Not Seen!";
+							$array["rep_given_+"] = "0";
+							$array["rep_given_-"] = "0";
 						}
 						
+						?>
+						
+						<?php 
+							$cointrust = json_decode(file_get_contents('https://cointrust.xyz/wp-json/wp/v2/profile?slug=' . $_GET['username']));
+							$cointrust_array = (array)$cointrust[0];
 						?>
 						<table class="table table-striped table-hover">
 							<tr>
@@ -79,6 +108,14 @@ if(!empty($_GET['username'])){
 								<td>Favorite Command Uses:</td>
 								<td><?= $array['fav_command_uses']; ?></td>
 							</tr>
+							<tr>
+								<td>Cointrust Status:</td>
+								<td><?php if(in_array($cointrust_array['suspicion'][0],array("hacker","scammer","abuser","dwc","spammer"))){ ?><i class="fa fa-exclamation-triangle" aria-hidden="true"></i><?php }elseif($cointrust_array['suspicion'][0] == "trustworthy"){?><i class="fa fa-trophy" aria-hidden="true"></i><?php }elseif($cointrust_array['suspicion'][0] == "none"){ ?><i class="fa fa-question" aria-hidden="true"></i><?php } ?> <?= $cointrust_array['suspicion'][0]; ?></td>
+							</tr>
+							<tr>
+								<td>Cointrust Profile:</td>
+								<td><?php if(!empty($cointrust_array['link'])){ ?><a href="<?= $cointrust_array['link']; ?>" target="_new">Visit <?= $cointrust_array['slug']; ?>'s Profile on Cointrust</a><?php }else{ ?>Could not find <?= htmlentities($_GET['username']); ?> on Cointrust!<?php } ?></td>
+							</tr>
 						</table>
 						<?php
 						//print_r($array);
@@ -87,6 +124,28 @@ if(!empty($_GET['username'])){
 			</div>
 		</div>
 	</div>
+	<div class="col-md-2 col-md-offset-6">
+			<!-- Begin Advertisement -->
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Advertisement</h3>
+				</div>
+				<div class="panel-body">
+					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- MaidBot_responsive -->
+					<ins class="adsbygoogle"
+						style="display:block"
+						data-ad-client="ca-pub-1484445584339390"
+						data-ad-slot="3912264864"
+						data-ad-format="auto">
+					</ins>
+					<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+				</div>
+			</div>
+			<!-- End Advertisement -->
+		</div>
 </div>
 <div class="row">
 	<div class="col-md-6">
@@ -241,7 +300,7 @@ if(!empty($_GET['username'])){
 								while($row = $result->fetch_assoc()) {
 						?>
 									<tr>
-										<td><?= $row["Username"]; ?></td>
+										<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= $row["Username"]; ?>"><?= $row["Username"]; ?></a></td>
 										<td><?= $row["COUNT(*)"]; ?></td>
 									</tr>
 						<?php
@@ -280,7 +339,7 @@ if(!empty($_GET['username'])){
 							while($row = $result->fetch_assoc()) {
 					?>
 								<tr>
-									<td><?= $row["Username"]; ?></td>
+									<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= $row["Username"]; ?>"><?= $row["Username"]; ?></a></td>
 									<td><?= $row["Count"]; ?></td>
 								</tr>
 					<?php
@@ -318,7 +377,7 @@ if(!empty($_GET['username'])){
 							while($row = $result->fetch_assoc()) {
 					?>
 							<tr>
-								<td><?= $row["Username"]; ?></td>
+								<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= $row["Username"]; ?>"><?= $row["Username"]; ?></a></td>
 								<td><?= $row["Count"]; ?></td>
 							</tr>
 					<?php
@@ -397,7 +456,7 @@ if(!empty($_GET['username'])){
 							while($row = $result->fetch_assoc()) { 
 					?>
 							<tr>
-								<td><?= $row["Username"]; ?></td>
+								<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= $row["Username"]; ?>"><?= $row["Username"]; ?></a></td>
 								<td><?php echo str_replace($banlist, $replace,$row["Command"]);?></td>
 								<td><?= $row["Date"]; ?></td>
 							</tr>
