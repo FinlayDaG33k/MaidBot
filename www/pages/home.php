@@ -1,37 +1,55 @@
 <div class="container-fluid">
-<?php
-if(!empty($_GET['username'])){
-?>
-
 <style>
-.fa-exclamation-triangle {
-	color: #e95420;
-    font-size: 25px;
+
+.fa {
+	font-size: 25px;
     vertical-align: middle;
     text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.65);
+}
+
+.fa-exclamation-triangle {
+	color: #e95420;
 }
 
 .fa-trophy {
 	color: #38b44a;
-    font-size: 25px;
-    vertical-align: middle;
-    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.65);
 }
 
 .fa-question {
     font-size: 25px;
-    vertical-align: middle;
-    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.65);
 }
 
 
 </style>
 
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('.panel-heading span.clickable').on("click", function (e) {
+            if ($(this).hasClass('panel-collapsed')) {
+                // expand the panel
+                $(this).parents('.panel').find('.panel-body').slideDown();
+                $(this).removeClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
+            else {
+                // collapse the panel
+                $(this).parents('.panel').find('.panel-body').slideUp();
+                $(this).addClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            }
+        });
+    });
+</script>
+
+<?php
+if(!empty($_GET['username'])){
+?>
+
 <h1>Viewing Data for <?= htmlentities($_GET['username']); ?></h1>
 <hr>
 
 <div class="row">
-	<div class="col-md-4">
+	<div class="col-md-6">
 		<div class="bs-component">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
@@ -114,7 +132,11 @@ if(!empty($_GET['username'])){
 							</tr>
 							<tr>
 								<td>Cointrust Profile:</td>
-								<td><?php if(!empty($cointrust_array['link'])){ ?><a href="<?= $cointrust_array['link']; ?>" target="_new">Visit <?= $cointrust_array['slug']; ?>'s Profile on Cointrust</a><?php }else{ ?>Could not find <?= htmlentities($_GET['username']); ?> on Cointrust!<?php } ?></td>
+								<td><?php if(!empty($cointrust_array['link'])){ ?><a href="<?= $cointrust_array['link']; ?>" target="_new">Visit <?= $cointrust_array['slug']; ?>'s Profile on Cointrust</a><?php }else{ ?><a href="https://www.cointrust.xyz/?s=<?= htmlentities($_GET['username']); ?>" target="_new">I could not find "<?= htmlentities($_GET['username']); ?>" on Cointrust Master</a><?php } ?></td>
+							</tr>
+							<tr>
+								<td>MaidBot API URL:</td>
+								<td><a href="<?= "https://maidbot.finlaydag33k.nl/api.php?username=" . htmlentities($_GET['username']); ?>" target="_new">Visit <?= htmlentities($_GET['username']); ?>'s page on the MaidBot API</a></td>
 							</tr>
 						</table>
 						<?php
@@ -124,7 +146,7 @@ if(!empty($_GET['username'])){
 			</div>
 		</div>
 	</div>
-	<div class="col-md-2 col-md-offset-6">
+	<div class="col-md-2 col-md-offset-4">
 			<!-- Begin Advertisement -->
 			<div class="panel panel-primary">
 				<div class="panel-heading">
@@ -181,7 +203,7 @@ if(!empty($_GET['username'])){
 							</table>
 					<?php
 						} else {
-							echo "No statistics available..";
+							echo "I'm Sorry, but I could not get any statistics at the moment. Please try again soon!";
 						}
 					?>
 				</div>
@@ -221,7 +243,7 @@ if(!empty($_GET['username'])){
 							</table>
 					<?php
 						} else {
-							echo "No statistics available..";
+							echo "I'm Sorry, but I could not get any statistics at the moment. Please try again soon!";
 						}
 					?>
 				</div>
@@ -268,7 +290,7 @@ if(!empty($_GET['username'])){
 								</table>
 						<?php
 							} else {
-								echo "No statistics available..";
+								echo "I'm Sorry, but I could not get any statistics at the moment. Please try again soon!";
 							}
 						?>
 					</div>
@@ -309,7 +331,7 @@ if(!empty($_GET['username'])){
 								</table>
 						<?php
 							} else {
-								echo "No statistics available..";
+								echo "I'm Sorry, but I could not get any statistics at the moment. Please try again soon!";
 							}
 						?>
 					</div>
@@ -321,7 +343,7 @@ if(!empty($_GET['username'])){
 			<!-- Begin 10 Most reputable Users -->
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title"> 10 Most Reputable Users <span class="badge">5</span></h3>
+					<h3 class="panel-title"><i class="fa fa-heart" aria-hidden="true"></i> 10 Most Reputable Users <span class="badge">5</span></h3>
 				</div>
 				<div class="panel-body">
 					<?php
@@ -348,7 +370,7 @@ if(!empty($_GET['username'])){
 							</table>
 					<?php
 						} else {
-							echo "No statistics available..";
+							echo "I'm Sorry, but I could not get any statistics at the moment. Please try again soon!";
 						}
 					?>
 				</div>
@@ -386,7 +408,7 @@ if(!empty($_GET['username'])){
 							</table>
 					<?php
 						} else {
-							echo "No statistics available..";
+							echo "I'm Sorry, but I could not get any statistics at the moment. Please try again soon!";
 						}
 					?>
 				</div>
@@ -424,7 +446,7 @@ if(!empty($_GET['username'])){
 							</table>
 					<?php
 						}else{
-							echo "No statistics available..";
+							echo "I'm Sorry, but I could not get any statistics at the moment. Please try again soon!";
 						}
 					?>
 				</div>
@@ -466,7 +488,7 @@ if(!empty($_GET['username'])){
 							</table>
 					<?php
 						} else {
-							echo "No statistics available..";
+							echo "I'm Sorry, but I could not get any statistics at the moment. Please try again soon!";
 						}
 					?>
 				</div>
@@ -477,11 +499,11 @@ if(!empty($_GET['username'])){
 			<!-- Begin Monthly Usage Graph -->
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Monthly Usage Graph <span class="badge">5</span></h3>
+					<h3 class="panel-title"><i class="fa fa-line-chart" aria-hidden="true"></i> Monthly Usage Graph <span class="badge">5</span></h3>
 				</div>
 				<div class="panel-body">
 					<?php
-						$sql = "SELECT * FROM daily_usages WHERE `Date` BETWEEN '".date("Y-m-d", strtotime("-30 days")) ."' AND '".date("Y-m-d", strtotime("+1 days"))."' ORDER by `Date` ASC LIMIT 31;";
+						$sql = "SELECT * FROM daily_usages WHERE `Date` BETWEEN '".date("Y-m-d", strtotime("-30 day")) ."' AND '".date("Y-m-d")."' ORDER by `Date` ASC;";
 						$result = $conn->query($sql);
 						if ($result->num_rows > 0) {
 					?>
@@ -515,12 +537,54 @@ if(!empty($_GET['username'])){
 						<div id="line-example" style="height: 300px;"></div>
 					<?php
 						}else{
-							echo "No statistics available..";
+							echo "I'm Sorry, but I could not get any statistics at the moment. Please try again soon!";
 						}
 					?>
 				</div>
 			</div>
 			<!-- End Monthly Usage Graph -->
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-money" aria-hidden="true"></i> Donations</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-striped table-hover">
+						<tr>
+							<td>Total Donations in BTC: </td>
+							<td>
+								<i class="fa fa-btc" aria-hidden="true"></i> 
+								<?php
+									$wallet = json_decode(file_get_contents('https://blockchain.info/address/1BRoDCbnJ7kTS5dvVhjLdQnyqSWWjWC6SS?format=json'));
+									echo number_format($wallet->total_received / 100000000,5);
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>Total Donations in Bits: </td>
+							<td><?php echo $wallet->total_received / 100; ?> Bits</td>
+						</tr>
+						<tr>
+							<td>Total Donations in EUR: </td>
+							<td>
+								<i class="fa fa-eur" aria-hidden="true"></i> 
+								<?php
+									$currencies = json_decode(file_get_contents('https://blockchain.info/ticker'));
+									echo number_format(($wallet->total_received / 100000000) * $currencies->EUR->sell,2);
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>Total Donations in USD: </td>
+							<td>
+								<i class="fa fa-usd" aria-hidden="true"></i> 
+								<?php
+									echo number_format(($wallet->total_received / 100000000) * $currencies->USD->sell,2) ;
+								?>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 		<div class="col-md-2">
 			<!-- Begin Advertisement -->
