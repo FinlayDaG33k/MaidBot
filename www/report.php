@@ -69,7 +69,7 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 				if ($conn->connect_error) {
 					die("Connection failed: " . $conn->connect_error);
 				} 
-				$sql = "SELECT * FROM rep_count WHERE `Username`='".$issuer."';";
+				$sql = "SELECT * FROM rep_count WHERE `Username`='".$issuer."' AND `invalidate`='0';";
 				$sql_output = $conn->query($sql);
 				if ($sql_output->num_rows > 0){
 					$row = $sql_output->fetch_assoc();
@@ -77,7 +77,7 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 					if($row['Count'] <= -3){
 						echo "I'm sorry, but giving reputation to people is disabled for you. Please get more positive reputation first then try again.";
 					}else{
-						$sql = "SELECT * FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."';";
+						$sql = "SELECT * FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."'; AND `invalidate`='0'";
 						$sql_output = $conn->query($sql);
 						if ($sql_output->num_rows > 0) { 
 							// If the issuer already gave rep to the reciever, update it instead.
@@ -87,14 +87,14 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 							}
 						}else{
 							// If the issuer did not gave rep to the reciever already
-							$sql = "INSERT INTO rep (Username, Rep, Reason, Giver)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','+', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."')";
+							$sql = "INSERT INTO rep (Username, Rep, Reason, Giver,invalidate)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','+', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."','0')";
 							if ($conn->query($sql) === TRUE) {
 								echo "I am happy to inform you that I managed to add reputation to " . $username . "'s record Master.";
 							}
 						}
 					}
 				}else{
-					$sql = "SELECT * FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."';";
+					$sql = "SELECT * FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."' AND `invalidate`='0';";
 					$sql_output = $conn->query($sql);
 					if ($sql_output->num_rows > 0) { 
 						// If the issuer already gave rep to the reciever, update it instead.
@@ -104,7 +104,7 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 						}
 					}else{
 						// If the issuer did not gave rep to the reciever already
-						$sql = "INSERT INTO rep (Username, Rep, Reason, Giver)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','+', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."')";
+						$sql = "INSERT INTO rep (Username, Rep, Reason, Giver,invalidate)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','+', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."','0')";
 						if ($conn->query($sql) === TRUE) {
 							echo "I am happy to inform you that I managed to add reputation to " . $username . "'s record Master.";
 						}
@@ -138,7 +138,7 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 							}
 						}else{
 							// If the issuer did not gave rep to the reciever already
-							$sql = "INSERT INTO rep (Username, Rep, Reason, Giver)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','-', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."')";
+							$sql = "INSERT INTO rep (Username, Rep, Reason, Giver,invalidate)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','-', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."','0')";
 							if ($conn->query($sql) === TRUE) {
 								echo "I am happy to inform you that I managed to add reputation to " . $username . "'s record Master.";
 							}
@@ -155,7 +155,7 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 							}
 						}else{
 							// If the issuer did not gave rep to the reciever already
-							$sql = "INSERT INTO rep (Username, Rep, Reason, Giver)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','-', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."')";
+							$sql = "INSERT INTO rep (Username, Rep, Reason, Giver,invalidate)VALUES ('" . mysqli_real_escape_string($conn,$username) . "','-', '".mysqli_real_escape_string($conn,$message)."','".mysqli_real_escape_string($conn,$issuer)."','0')";
 							if ($conn->query($sql) === TRUE) {
 								echo "I am happy to inform you that I managed to add reputation to " . $username . "'s record Master.";
 							}
@@ -171,7 +171,7 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 				die("Connection failed: " . $conn->connect_error);
 			} 
 			
-			$sql = "SELECT * FROM rep WHERE Username='".mysqli_real_escape_string($conn,$username)."' ORDER BY RAND() LIMIT 5;";
+			$sql = "SELECT * FROM rep WHERE Username='".mysqli_real_escape_string($conn,$username)."' AND `invalidate`='0' ORDER BY RAND() LIMIT 5;";
 			$sql_output = $conn->query($sql);
 			if ($sql_output->num_rows > 0) { 
 				// List a random rep from the user!
@@ -194,11 +194,11 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 					die("Connection failed: " . $conn->connect_error);
 				} 
 			
-				$sql = "SELECT * FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."';";
+				$sql = "SELECT * FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND `invalidate`='0' AND Username='".mysqli_real_escape_string($conn,$username)."';";
 				$sql_output = $conn->query($sql);
 				if ($sql_output->num_rows > 0) { 
 					// Only do this is the issuer actually already gave rep to the reciever.
-					$sql = "DELETE FROM `rep` WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."';";
+					$sql = "UPDATE `rep` SET `invalidate`='1' WHERE Giver='".mysqli_real_escape_string($conn,$issuer)."' AND Username='".mysqli_real_escape_string($conn,$username)."';";
 					if ($conn->query($sql) === TRUE) {
 						echo "I'm glad to inform you that I successfully removed the reputation you gave to ".mysqli_real_escape_string($conn,$username);
 					}
@@ -215,7 +215,7 @@ if (password_verify($servertoken . $clienttoken, $tokenhash)) {
 			if ($conn->connect_error) {
 				die("Connection failed: " . $conn->connect_error);
 			} 
-			$sql = "SELECT Rep,COUNT(*) as count FROM rep WHERE Username='".mysqli_real_escape_string($conn,$username)."' GROUP BY Rep ORDER BY count DESC;";
+			$sql = "SELECT Rep,COUNT(*) as count FROM rep WHERE Username='".mysqli_real_escape_string($conn,$username)."' AND `invalidate`='0' GROUP BY Rep ORDER BY count DESC;";
 			$sql_output = $conn->query($sql);
 			if ($sql_output->num_rows > 0) { 
 				echo $username . " has this reputation: ";

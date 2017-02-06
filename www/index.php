@@ -34,7 +34,12 @@ if (!empty($_GET['action'])) {
 }
 
 include("inc/navbar.php");
-include("pages/$action.php"); 
-
+?>
+<div class="container-fluid">
+	<?php
+		include("pages/$action.php");
+	?>
+</div>
+<?php
 $conn->close();
 ?>

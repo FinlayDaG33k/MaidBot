@@ -13,7 +13,7 @@ module.exports = {
             var lastRaffleTickets = 0;
             
             require("../bot.js").raffle = {
-                minPot: 500,
+                minPot: 2000,
         		price: 100,
         		canRoll: true,
         		mustRoll: false,
@@ -22,7 +22,7 @@ module.exports = {
                 timer: setInterval(function() {
                     
                     if((secUntilMidnight() >= 0 && secUntilMidnight() <= 6 && require("../bot.js").raffle.canRoll) || require("../bot.js").raffle.mustRoll){ // lottery roll !
-                        if(require("../bot.js").raffle.tickets.length > 500){
+                        if(require("../bot.js").raffle.tickets.length > 2000){
                             require("../bot.js").raffle.canRoll = false;
                             require("../bot.js").raffle.mustRoll = false;
                             var rand = getRandomInt(0, require("../bot.js").raffle.tickets.length-1);
@@ -90,7 +90,7 @@ module.exports = {
                             ticketsFile.writeSync();
                         }else{ // no ticket bought :(
                             require("../bot.js").raffle.canRoll = false;
-                            require("../bot.js").maidbot.webClient.doSay("There are not enough tickets bought for today's raffle. So there is no winner today. Please consider buying tickets for tomorrows draw. (" + require("../bot.js").raffle.tickets.length + "/20 tickets)", 'spam');
+                            require("../bot.js").maidbot.webClient.doSay("There are not enough tickets bought for today's raffle. So there is no winner today. Please consider buying tickets for tomorrows draw. (" + require("../bot.js").raffle.tickets.length + "/2000 tickets)", 'spam');
                         }
                     }
                     

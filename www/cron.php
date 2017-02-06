@@ -15,12 +15,12 @@ if ($result->num_rows > 0) {
 	$void = $conn->query($sql);
 	while($row = $result->fetch_assoc()){
 		// Get the positive Rep
-		$sql_positive = "SELECT Username, Count(*) FROM rep WHERE Username='".$row['Username']."' AND rep='+';";
+		$sql_positive = "SELECT Username, Count(*) FROM rep WHERE Username='".$row['Username']."' AND rep='+' AND `invalidate`='0';";
 		$positive = $conn->query($sql_positive);
 		$positive = $positive->fetch_assoc();
 		$positive = $positive['Count(*)'];
 		
-		$sql_negative = "SELECT Username, Count(*) FROM rep WHERE Username='".$row['Username']."' AND rep='-';";
+		$sql_negative = "SELECT Username, Count(*) FROM rep WHERE Username='".$row['Username']."' AND rep='-' AND `invalidate`='0';";
 		$negative = $conn->query($sql_negative);
 		$negative = $negative->fetch_assoc();
 		$negative = $negative['Count(*)'];

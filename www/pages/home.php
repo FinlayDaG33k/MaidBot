@@ -1,4 +1,3 @@
-<div class="container-fluid">
 <style>
 
 .fa {
@@ -41,6 +40,18 @@
     });
 </script>
 
+
+<script>
+ window.onload = function() {
+        setTimeout(function() {
+          var ad = document.querySelector("ins.adsbygoogle");
+          if (ad && ad.innerHTML.replace(/\s/g, "").length == 0) {
+            content.innerHTML = "You seem to blocking Google AdSense ads in your browser. Please disable it and refresh the page :)<br />The ad is non-invasive, so you probably won't even notice it's there, but it will help me a great deal anyways :)";
+          }
+        }); 
+      }; 
+</script>
+<div id="content">
 <?php
 if(!empty($_GET['username'])){
 ?>
@@ -58,7 +69,7 @@ if(!empty($_GET['username'])){
 				<div class="panel-body">
 					<?php
 						$array = [];
-						$sql = "SELECT Rep,COUNT(*) as count FROM rep WHERE Username='".mysqli_real_escape_string($conn,$_GET['username'])."' GROUP BY Rep ORDER BY count DESC;";
+						$sql = "SELECT Rep,COUNT(*) as count FROM rep WHERE Username='".mysqli_real_escape_string($conn,$_GET['username'])."' AND `invalidate`='0' GROUP BY Rep ORDER BY count DESC;";
 						$sql_output = $conn->query($sql);
 						if ($sql_output->num_rows > 0) { 
 							while($row = $sql_output->fetch_row()){
@@ -70,7 +81,7 @@ if(!empty($_GET['username'])){
 							$array["rep_received_-"] = "0";
 						}
 						
-						$sql = "SELECT Command,COUNT(*) as count FROM logs WHERE Username='".mysqli_real_escape_string($conn,$_GET['username'])."' GROUP BY Command ORDER BY count DESC LIMIT 1;";
+						$sql = "SELECT Command,COUNT(*) as count FROM logs WHERE Username='".mysqli_real_escape_string($conn,$_GET['username'])."' AND `invalidate`='0' GROUP BY Command ORDER BY count DESC LIMIT 1;";
 						$sql_output = $conn->query($sql);
 						if ($sql_output->num_rows > 0) { 
 							while($row = $sql_output->fetch_row()){
@@ -83,7 +94,7 @@ if(!empty($_GET['username'])){
 							$array["fav_command_uses"] = "";
 						}
 						
-						$sql = "SELECT Rep,COUNT(*) as count FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$_GET['username'])."' GROUP BY Rep ORDER BY count DESC;";
+						$sql = "SELECT Rep,COUNT(*) as count FROM rep WHERE Giver='".mysqli_real_escape_string($conn,$_GET['username'])."' AND `invalidate`='0' GROUP BY Rep ORDER BY count DESC;";
 						$sql_output = $conn->query($sql);
 						if ($sql_output->num_rows > 0) { 
 							while($row = $sql_output->fetch_row()){
@@ -104,27 +115,27 @@ if(!empty($_GET['username'])){
 						<table class="table table-striped table-hover">
 							<tr>
 								<td>Positive Reputation Received:</td>
-								<td><?= $array['rep_received_+']; ?></td>
+								<td><?= htmlentities($array['rep_received_+']); ?></td>
 							</tr>
 							<tr>
 								<td>Negative Reputation Received:</td>
-								<td><?= $array['rep_received_-']; ?></td>
+								<td><?= htmlentities($array['rep_received_-']); ?></td>
 							</tr>
 							<tr>
 								<td>Positive Reputation Given:</td>
-								<td><?= $array['rep_given_+']; ?></td>
+								<td><?= htmlentities($array['rep_given_+']); ?></td>
 							</tr>
 							<tr>
 								<td>Negative Reputation Given:</td>
-								<td><?= $array['rep_given_-']; ?></td>
+								<td><?= htmlentities($array['rep_given_-']); ?></td>
 							</tr>
 							<tr>
 								<td>Favorite Command:</td>
-								<td><?= $array['fav_command']; ?></td>
+								<td><?= htmlentities($array['fav_command']); ?></td>
 							</tr>
 							<tr>
 								<td>Favorite Command Uses:</td>
-								<td><?= $array['fav_command_uses']; ?></td>
+								<td><?= htmlentities($array['fav_command_uses']); ?></td>
 							</tr>
 							<tr>
 								<td>Cointrust Status:</td>
@@ -178,7 +189,7 @@ if(!empty($_GET['username'])){
 				</div>
 				<div class="panel-body">
 					<?php
-						$sql = "SELECT * FROM `rep` WHERE `Username`='".mysqli_real_escape_string($conn,$_GET['username'])."' ORDER BY RAND() LIMIT 20;";
+						$sql = "SELECT * FROM `rep` WHERE `Username`='".mysqli_real_escape_string($conn,$_GET['username'])."' AND `invalidate`='0' ORDER BY RAND() LIMIT 20;";
 						$result = $conn->query($sql);
 						if ($result->num_rows > 0) {
 							// output data of each row
@@ -193,9 +204,9 @@ if(!empty($_GET['username'])){
 							while($row = $result->fetch_assoc()) {
 					?>
 								<tr>
-									<td><?= $row["Giver"]; ?></td>
-									<td><?= $row["Rep"]; ?></td>
-									<td><?= $row["Reason"]; ?></td>
+									<td><?= htmlentities($row["Giver"]); ?></td>
+									<td><?= htmlentities($row["Rep"]); ?></td>
+									<td><?= htmlentities($row["Reason"]); ?></td>
 								</tr>
 					<?php
 							}
@@ -218,7 +229,7 @@ if(!empty($_GET['username'])){
 				</div>
 				<div class="panel-body">
 					<?php
-						$sql = "SELECT * FROM `rep` WHERE `Giver`='".mysqli_real_escape_string($conn,$_GET['username'])."' ORDER BY RAND() LIMIT 20;";
+						$sql = "SELECT * FROM `rep` WHERE `Giver`='".mysqli_real_escape_string($conn,$_GET['username'])."' AND `invalidate`='0' ORDER BY RAND() LIMIT 20;";
 						$result = $conn->query($sql);
 						if ($result->num_rows > 0) {
 							// output data of each row
@@ -233,9 +244,9 @@ if(!empty($_GET['username'])){
 							while($row = $result->fetch_assoc()) {
 					?>
 								<tr>
-									<td><?= $row["Username"]; ?></td>
-									<td><?= $row["Rep"]; ?></td>
-									<td><?= $row["Reason"]; ?></td>
+									<td><?= htmlentities($row["Username"]); ?></td>
+									<td><?= htmlentities($row["Rep"]); ?></td>
+									<td><?= htmlentities($row["Reason"]); ?></td>
 								</tr>
 					<?php
 							}
@@ -281,8 +292,8 @@ if(!empty($_GET['username'])){
 								while($row = $result->fetch_assoc()) {
 						?>
 									<tr>
-										<td><?= $row["Date"]; ?></td>
-										<td><?= $row["Uses"]; ?></td>
+										<td><?= htmlentities($row["Date"]); ?></td>
+										<td><?= htmlentities($row["Uses"]); ?></td>
 									</tr>
 						<?php
 								}
@@ -322,8 +333,8 @@ if(!empty($_GET['username'])){
 								while($row = $result->fetch_assoc()) {
 						?>
 									<tr>
-										<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= $row["Username"]; ?>"><?= $row["Username"]; ?></a></td>
-										<td><?= $row["COUNT(*)"]; ?></td>
+										<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= htmlentities($row["Username"]); ?>"><?= htmlentities($row["Username"]); ?></a></td>
+										<td><?= htmlentities($row["COUNT(*)"]); ?></td>
 									</tr>
 						<?php
 								}
@@ -361,8 +372,8 @@ if(!empty($_GET['username'])){
 							while($row = $result->fetch_assoc()) {
 					?>
 								<tr>
-									<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= $row["Username"]; ?>"><?= $row["Username"]; ?></a></td>
-									<td><?= $row["Count"]; ?></td>
+									<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= htmlentities($row["Username"]); ?>"><?= htmlentities($row["Username"]); ?></a></td>
+									<td><?= htmlentities($row["Count"]); ?></td>
 								</tr>
 					<?php
 							}
@@ -399,8 +410,8 @@ if(!empty($_GET['username'])){
 							while($row = $result->fetch_assoc()) {
 					?>
 							<tr>
-								<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= $row["Username"]; ?>"><?= $row["Username"]; ?></a></td>
-								<td><?= $row["Count"]; ?></td>
+								<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= htmlentities($row["Username"]); ?>"><?= htmlentities($row["Username"]); ?></a></td>
+								<td><?= htmlentities($row["Count"]); ?></td>
 							</tr>
 					<?php
 							}
@@ -437,8 +448,8 @@ if(!empty($_GET['username'])){
 							while($row = $result->fetch_assoc()) {
 					?>
 								<tr>
-									<td><?= $row["command"]; ?></td>
-									<td><?= $row["COUNT(*)"]; ?></td>
+									<td><?= htmlentities($row["command"]); ?></td>
+									<td><?= htmlentities($row["COUNT(*)"]); ?></td>
 								</tr>
 					<?php
 							}
@@ -478,9 +489,9 @@ if(!empty($_GET['username'])){
 							while($row = $result->fetch_assoc()) { 
 					?>
 							<tr>
-								<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= $row["Username"]; ?>"><?= $row["Username"]; ?></a></td>
-								<td><?php echo str_replace($banlist, $replace,$row["Command"]);?></td>
-								<td><?= $row["Date"]; ?></td>
+								<td><a href="https://maidbot.finlaydag33k.nl/?username=<?= htmlentities($row["Username"]); ?>"><?= htmlentities($row["Username"]); ?></a></td>
+								<td><?php echo htmlentities(str_replace($banlist, $replace,$row["Command"]));?></td>
+								<td><?= htmlentities($row["Date"]); ?></td>
 							</tr>
 					<?php
 							}
@@ -494,6 +505,44 @@ if(!empty($_GET['username'])){
 				</div>
 			</div>
 			<!-- End 10 last commands -->
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Last Raffle Winners</h3>
+				</div>
+				<div class="panel-body">
+					<?php
+						$sql = "SELECT * FROM raffle_winners ORDER BY Date DESC LIMIT 10;";
+						$result = $conn->query($sql);
+
+						if ($result->num_rows > 0) {
+							// output data of each row
+					?>
+							<table class="table table-striped table-hover">
+								<tr>
+									<th>Username</th>
+									<th>Pot</th>
+									<th>Date</th>
+								</tr>
+					<?php
+								while($row = $result->fetch_assoc()) {
+		 
+					?>
+							<tr>
+								<td><?= htmlentities($row["Username"]); ?></td>
+								<td><?= htmlentities($row["Pot"]);?></td>
+								<td><?= htmlentities($row["Date"]); ?></td>
+							</tr>
+					<?php
+								}
+					?>
+							</table>
+					<?php
+						} else {
+							echo "No statistics available..";
+						}
+					?>
+				</div>
+			</div>
 		</div>
 		<div class="col-md-4">
 			<!-- Begin Monthly Usage Graph -->

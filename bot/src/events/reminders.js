@@ -6,7 +6,7 @@ module.exports = {
         if (typeof data.initialize !== "undefined" && data.initialize) {
             
             var reminders = [
-				"Please don't forget to buy some tickets for tonights Raffle!",
+				"Please don't forget to buy some tickets for the next Raffle!",
 				"Don't forget to take a break from Bustabit now and then!",
 				"Please do not bet bits you can't afford to lose!",
 				"If you lend out bits, please be careful as there always is a chance to get scammed!",

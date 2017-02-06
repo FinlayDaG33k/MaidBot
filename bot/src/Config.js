@@ -5,6 +5,7 @@ module.exports = {
 	MAIDBOTSERVER: "http://localhost",
     SESSION: process.env.BOT_SESSION || sensitive.BOT_SESSION || "",
     PASSWORD: process.env.BOT_PASSWORD || sensitive.BOT_PASSWORD || "",
+    USERNAME: process.env.BOT_USERNAME || sensitive.BOT_USERNAME || "",
 	CLIENT_TOKEN: sensitive.BOT_CLIENT_TOKEN || "",
 	BOT_DEBUG: "false"
 };

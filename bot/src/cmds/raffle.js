@@ -12,13 +12,15 @@ module.exports = {
             if(parameters[1] == "pot"){
                 require("../bot.js").maidbot.webClient.doSay("The current pot contains "+require("../bot.js").raffle.pot()+" Bits (1.5% fees)", channelName);
             }else if(parameters[1] == "help"){
-                require("../bot.js").maidbot.webClient.doSay("This is a raffle. This means players put some bits in the pot and a winner is selected randomly once every day at Midnight (UTC). The winner wins the whole pot minus some fees (1.5%) | Options: [help|pot|buy|last|next|mytickets] (Example: !maidbot raffle mytickets)", channelName);
+                require("../bot.js").maidbot.webClient.doSay("This is a raffle. This means players put some bits in the pot and a winner is selected randomly once every day at Midnight (UTC) when atleast 2000 tickets have been sold. The winner wins the whole pot minus some fees (1.5%) | Options: [help|pot|buy|last|next|left|mytickets] (Example: !maidbot raffle mytickets)", channelName);
             }else if(parameters[1] == "lastwinner" || parameters[1] == "last"){
                 require("../bot.js").maidbot.webClient.doSay("Last times pot winner was "+require("../bot.js").raffle.games.lastWinner+" who won "+require("../bot.js").raffle.games.lastPot+" Bits!", channelName);
             }else if(parameters[1] == "howto" || parameters[1] == "how" || parameters[1] == "buy"){
                 require("../bot.js").maidbot.webClient.doSay("If you want to buy tickets, please send 100 Bits per ticket to this account 'MaidBot' (using https://www.bustabit.com/transfer)", channelName);
             }else if(parameters[1] == "next"){
-                require("../bot.js").maidbot.webClient.doSay("I will draw the next lucky winner in "+secUntilMidnight()+" seconds!", channelName);
+                require("../bot.js").maidbot.webClient.doSay("I will draw the next lucky winner in "+secUntilMidnight()+" seconds if we sell " + (2000 - require("../bot.js").raffle.tickets.length) + " more tickets!", channelName);
+			}else if(parameters[1] == "left"){
+				require("../bot.js").maidbot.webClient.doSay("There need to be " + (2000 - require("../bot.js").raffle.tickets.length) + " more tickets sold before the raffle will start!", channelName);
             }else if(parameters[1] == "mytickets" || parameters[1] == "tickets"){
                 var amount = 0;
 				for(var i=0;i<require("../bot.js").raffle.tickets.length; i++){
